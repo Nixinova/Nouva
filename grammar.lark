@@ -1,0 +1,30 @@
+// root level
+start: unit*
+
+// one unit of code
+unit: statement | block
+
+// what a unit of code can be made up of
+statement: [expression | parenth_expression] ";"
+block: "{" statement+ "}"
+
+// what can make up a line of code
+expression: number | boolean | string | math_expression
+parenth_expression: "(" expression ")"
+math_expression: expression op expression
+
+// atomics
+number: digit+ | digit* "." digit+ | "-" number
+boolean: "true" | "false"
+string: "\"" string_char+ "\""
+
+// used in atomics
+op: "+" | "-" | "*" | "/"
+
+// fundamentals
+digit: /[0-9]/
+string_char: /[^"]/ | "\\" any
+any: /./
+
+// ignores
+%ignore /\s/
