@@ -6,20 +6,30 @@ unit: statement | block
 
 // what a unit of code can be made up of
 statement: [expression | parenth_expression] ";"
-block: "{" statement+ "}"
+block: "{" statement* "}"
 
 // what can make up a line of code
-expression: number | boolean | string | math_expression
+expression: number | null | boolean | string
+    | parenth_expression
+    | unary_expression | math_expression
+
 parenth_expression: "(" expression ")"
-math_expression: expression op expression
+unary_expression: ("+" | "-") expression
+math_expression: expression ("+" | "-") expression
+    | expression ("*" | "/") expression 
 
 // atomics
-number: digit+ | digit* "." digit+ | "-" number
-boolean: "true" | "false"
-string: "\"" string_char+ "\""
+number: digit+ | digit* "." digit+ | based_number
+based_number: binary_number | octal_number | hex_number
+binary_number: "0b" /[0-1]/+
+octal_number: "0o" /[0-8]/+
+hex_number: "0x" /[0-9a-fA-F]/+
 
-// used in atomics
-op: "+" | "-" | "*" | "/"
+null: "null"
+
+boolean: "true" | "false"
+
+string: "\"" string_char* "\""
 
 // fundamentals
 digit: /[0-9]/
