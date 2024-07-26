@@ -9,7 +9,7 @@ block: "{" unit* "}"
 control_block: if_block | while_block
 if_block: if_header block [else_header block]
 while_block: while_header block
-function_decl: "function" identifier "(" params_list ")" block
+function_decl: "function" identifier params_list block
 
 // line of code
 statement: [declaration | definition | expression] ";"
@@ -18,25 +18,26 @@ definition: identifier "=" expression
 
 // expressions
 expression: null | boolean | number | string
-    | array
+    | array | map
     | identifier
     | function_invocation
-    | array_picking
+    | array_getter | map_getter
     | unary_expression | math_expression
     | comparison_expression
     | parenth_expression
     | function_expression | lambda_expression
 
-function_invocation: identifier "(" args_list ")"
-array_picking: identifier "[" expression ["::" expression] "]"
+function_invocation: identifier args_list
+array_getter: identifier "[" expression ["::" expression] "]"
+map_getter: identifier "." map_key
 
 unary_expression: ("+" | "-" | "!") expression
 math_expression: expression ("+" | "-") expression
     | expression ("*" | "/") expression
 comparison_expression: expression comparison_op expression
 parenth_expression: "(" expression ")"
-function_expression: "function" "(" params_list ")" block
-lambda_expression: "(" params_list ")" "=>" expression
+function_expression: "function" params_list block
+lambda_expression: params_list "=>" expression
 
 // headers
 if_header: "if" expression
@@ -45,10 +46,6 @@ while_header: "while" expression
 
 // keywords
 var_keyword: "var" | "val"
-
-// language shortcut elements
-params_list: (identifier [","])*
-args_list: (expression [","])*
 
 // atomics
 identifier: word_char id_char*
@@ -66,6 +63,12 @@ hex_number: "0x" /[0-9a-fA-F]/+
 string: "\"" string_char* "\""
 
 array: "[" ([number ":"] expression [","])* "]"
+map: "{" (map_key ":" expression [","])* "}"
+
+// language shortcut elements
+params_list: "(" (identifier [","])* ")"
+args_list: "(" (expression [","])* ")"
+map_key: identifier | string
 
 // fundamentals
 any: /./
