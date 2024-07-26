@@ -16,13 +16,16 @@ declaration: var_keyword identifier "=" expression
 // expressions
 expression:
     | null | boolean | number | string
+    | identifier
     | unary_expression | math_expression
+    | comparison_expression
     | parenth_expression
 
-unary_expression: ("+" | "-") expression
+unary_expression: ("+" | "-" | "!") expression
 math_expression:
     | expression ("+" | "-") expression
     | expression ("*" | "/") expression
+comparison_expression: expression comparison_op expression
 parenth_expression: "(" expression ")"
 
 // headers
@@ -49,11 +52,12 @@ hex_number: "0x" /[0-9a-fA-F]/+
 string: "\"" string_char* "\""
 
 // fundamentals
+any: /./
 digit: /[0-9]/
 word_char: /[a-zA-Z_]/
 string_char: /[^"]/ | "\\" any
 id_char: word_char | digit
-any: /./
+comparison_op: "==" | "!=" | "<" | "<= |" ">" | ">="
 
 // ignores
 %ignore /\s/
