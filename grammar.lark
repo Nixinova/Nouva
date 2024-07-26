@@ -1,13 +1,15 @@
 // root level
 start: unit*
 
-unit: statement | block | control_block
+// blocks of code
+unit: statement | block | control_block | function_decl
 
-// blocks
 block: "{" unit* "}"
+
 control_block: if_block | while_block
 if_block: if_header block [else_header block]
 while_block: while_header block
+function_decl: "function" identifier "(" params_list ")" block
 
 // line of code
 statement: [declaration | definition | expression] ";"
@@ -17,15 +19,21 @@ definition: identifier "=" expression
 // expressions
 expression: null | boolean | number | string
     | identifier
+    | invocation
     | unary_expression | math_expression
     | comparison_expression
     | parenth_expression
+    | function_expression | lambda_expression
+
+invocation: identifier "(" args_list ")"
 
 unary_expression: ("+" | "-" | "!") expression
 math_expression: expression ("+" | "-") expression
     | expression ("*" | "/") expression
 comparison_expression: expression comparison_op expression
 parenth_expression: "(" expression ")"
+function_expression: "function" "(" params_list ")" block
+lambda_expression: "(" params_list ")" "=>" expression
 
 // headers
 if_header: "if" expression
@@ -34,6 +42,10 @@ while_header: "while" expression
 
 // keywords
 var_keyword: "var" | "val"
+
+// language macro elements
+params_list: (identifier [","])*
+args_list: (expression [","])*
 
 // atomics
 identifier: word_char id_char*
