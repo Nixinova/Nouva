@@ -18,14 +18,17 @@ definition: identifier "=" expression
 
 // expressions
 expression: null | boolean | number | string
+    | array
     | identifier
-    | invocation
+    | function_invocation
+    | array_picking
     | unary_expression | math_expression
     | comparison_expression
     | parenth_expression
     | function_expression | lambda_expression
 
-invocation: identifier "(" args_list ")"
+function_invocation: identifier "(" args_list ")"
+array_picking: identifier "[" expression ["::" expression] "]"
 
 unary_expression: ("+" | "-" | "!") expression
 math_expression: expression ("+" | "-") expression
@@ -43,7 +46,7 @@ while_header: "while" expression
 // keywords
 var_keyword: "var" | "val"
 
-// language macro elements
+// language shortcut elements
 params_list: (identifier [","])*
 args_list: (expression [","])*
 
@@ -61,6 +64,8 @@ octal_number: "0o" /[0-8]/+
 hex_number: "0x" /[0-9a-fA-F]/+
 
 string: "\"" string_char* "\""
+
+array: "[" ([number ":"] expression [","])* "]"
 
 // fundamentals
 any: /./
