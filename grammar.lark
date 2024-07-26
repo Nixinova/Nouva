@@ -1,29 +1,27 @@
 // root level
 start: unit*
 
-unit: [statement] ";" | block | control_block
+unit: statement | block | control_block
 
 // blocks
 block: "{" unit* "}"
-control_block:
-    | if_header block [else_header block]
-    | while_header block
+control_block: if_block | while_block
+if_block: if_header block [else_header block]
+while_block: while_header block
 
 // line of code
-statement: [expression | declaration]
+statement: [expression | declaration] ";"
 declaration: var_keyword identifier "=" expression
 
 // expressions
-expression:
-    | null | boolean | number | string
+expression: null | boolean | number | string
     | identifier
     | unary_expression | math_expression
     | comparison_expression
     | parenth_expression
 
 unary_expression: ("+" | "-" | "!") expression
-math_expression:
-    | expression ("+" | "-") expression
+math_expression: expression ("+" | "-") expression
     | expression ("*" | "/") expression
 comparison_expression: expression comparison_op expression
 parenth_expression: "(" expression ")"
