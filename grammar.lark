@@ -23,7 +23,10 @@ expression: null | boolean | number | string
     | function_invocation
     | array_getter | map_getter
     | typed_expression
-    | unary_expression | math_expression
+    | unary_expression
+    | math_expression
+    | bitwise_expression
+    | logical_expression
     | comparison_expression
     | parenth_expression
     | function_expression | lambda_expression
@@ -33,9 +36,12 @@ array_getter: identifier "[" expression ["::" expression] "]"
 map_getter: identifier "." map_key
 
 typed_expression: identifier ":" expression
-unary_expression: ("+" | "-" | "!") expression
+unary_expression: ("+" | "-" | "!" | "~") expression
 math_expression: expression ("+" | "-") expression
     | expression ("*" | "/") expression
+    | expression ("^") expression
+bitwise_expression: expression bitwise_op expression
+logical_expression: expression logical_op expression
 comparison_expression: expression comparison_op expression
 parenth_expression: "(" expression ")"
 function_expression: "function" params_list block
@@ -78,6 +84,8 @@ digit: /[0-9]/
 word_char: /[a-zA-Z_]/
 string_char: /[^"]/ | "\\" any
 id_char: word_char | digit
+bitwise_op: "&" | "|" | "#" | "<<" | ">>"
+logical_op: "&&" | "||"
 comparison_op: "==" | "!=" | "<" | "<= |" ">" | ">="
 
 // ignores
