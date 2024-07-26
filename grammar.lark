@@ -22,6 +22,7 @@ expression: null | boolean | number | string
     | identifier
     | function_invocation
     | array_getter | map_getter
+    | typed_expression
     | unary_expression | math_expression
     | comparison_expression
     | parenth_expression
@@ -31,6 +32,7 @@ function_invocation: identifier args_list
 array_getter: identifier "[" expression ["::" expression] "]"
 map_getter: identifier "." map_key
 
+typed_expression: identifier ":" expression
 unary_expression: ("+" | "-" | "!") expression
 math_expression: expression ("+" | "-") expression
     | expression ("*" | "/") expression
