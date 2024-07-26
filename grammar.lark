@@ -10,8 +10,9 @@ if_block: if_header block [else_header block]
 while_block: while_header block
 
 // line of code
-statement: [expression | declaration] ";"
-declaration: var_keyword identifier "=" expression
+statement: [declaration | definition | expression] ";"
+declaration: var_keyword identifier ["=" expression]
+definition: identifier "=" expression
 
 // expressions
 expression: null | boolean | number | string
@@ -28,7 +29,7 @@ parenth_expression: "(" expression ")"
 
 // headers
 if_header: "if" expression
-else_header: "else" (expression | if_header)
+else_header: "else" [if_header]
 while_header: "while" expression
 
 // keywords
