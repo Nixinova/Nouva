@@ -1,39 +1,58 @@
 // root level
 start: unit*
 
-// one unit of code
-unit: statement | block
+unit: [statement] ";" | block | control_block
 
-// what a unit of code can be made up of
-statement: [expression | parenth_expression] ";"
-block: "{" statement* "}"
+// blocks
+block: "{" unit* "}"
+control_block:
+    | if_header block [else_header block]
+    | while_header block
 
-// what can make up a line of code
-expression: number | null | boolean | string
-    | parenth_expression
+// line of code
+statement: [expression | declaration]
+declaration: var_keyword identifier "=" expression
+
+// expressions
+expression:
+    | null | boolean | number | string
     | unary_expression | math_expression
+    | parenth_expression
 
-parenth_expression: "(" expression ")"
 unary_expression: ("+" | "-") expression
-math_expression: expression ("+" | "-") expression
-    | expression ("*" | "/") expression 
+math_expression:
+    | expression ("+" | "-") expression
+    | expression ("*" | "/") expression
+parenth_expression: "(" expression ")"
+
+// headers
+if_header: "if" expression
+else_header: "else" (expression | if_header)
+while_header: "while" expression
+
+// keywords
+var_keyword: "var" | "val"
 
 // atomics
+identifier: word_char id_char*
+
+null: "null"
+
+boolean: "true" | "false"
+
 number: digit+ | digit* "." digit+ | based_number
 based_number: binary_number | octal_number | hex_number
 binary_number: "0b" /[0-1]/+
 octal_number: "0o" /[0-8]/+
 hex_number: "0x" /[0-9a-fA-F]/+
 
-null: "null"
-
-boolean: "true" | "false"
-
 string: "\"" string_char* "\""
 
 // fundamentals
 digit: /[0-9]/
+word_char: /[a-zA-Z_]/
 string_char: /[^"]/ | "\\" any
+id_char: word_char | digit
 any: /./
 
 // ignores
