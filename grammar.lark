@@ -6,10 +6,11 @@ unit: statement | block | control_block | function_decl
 
 block: "{" unit* "}"
 
-control_block: if_block | while_block
+control_block: if_block | while_block | for_block
 if_block: "if" expression block [else_block]
 else_block: "else" [if_block | block]
 while_block: "while" expression block
+for_block: "for" identifier ":" expression block
 
 function_decl: "function" identifier params_list block
 
@@ -20,7 +21,7 @@ definition: identifier "=" expression
 reassignment: identifier reassignment_op expression
 
 // expressions
-expression: null | boolean | number | string
+expression: null | boolean | number | string | range
     | array | map
     | identifier
     | function_invocation
@@ -35,7 +36,7 @@ expression: null | boolean | number | string
     | parenth_expression
 
 function_invocation: identifier args_list
-array_getter: identifier "[" array_range "]"
+array_getter: identifier "[" range "]"
 map_getter: identifier "." map_key
 
 typed_expression: identifier ":" expression
@@ -68,6 +69,8 @@ hex_number: "0x" /[0-9a-fA-F]/+
 
 string: "\"" string_char* "\""
 
+range: expression | expression ".." [expression] | [expression] ".." expression
+
 array: "[" ([number ":"] expression [","])* "]"
 map: "{" (map_key ":" expression [","])* "}"
 
@@ -75,7 +78,6 @@ map: "{" (map_key ":" expression [","])* "}"
 params_list: "(" (identifier [","])* ")"
 args_list: "(" (expression [","])* ")"
 map_key: identifier | string
-array_range: expression | expression ".." [expression] | [expression] ".." expression
 
 // fundamentals
 any: /./

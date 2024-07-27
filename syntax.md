@@ -20,11 +20,15 @@ Nouva contains the following literals:
 - **Array**:
   - Explicit indices may be given, with successor elements continuing on from that index.
   - Examples: `["a", "b"]`, `[ 1: 1, 2, 3, ]`.
-  - Access a single element using `_array[_index]` or multiple elements using `_array[_start.._end]`, where either `_start` or `_end` but not both may be left out.
+  - Access a single element using `_array[_index]` or `_array[_range]`.
 - **Map**:
   - Keys may be identifiers or strings.
   - Examples: `{id: "value", id_2: "value 2"}`, `{ "string key": true }`.
   - Access elements using `_object.id` or `_object."string key"`.
+- **Range:**
+  - Creates an iterable range.
+  - Syntax: `_start.._end`, where either `_start` or `_end` (but not both) may be left out.
+  - Examples: `2..4`, `-3..3`.
 
 ## Expressions
 
@@ -131,8 +135,9 @@ thisIsAString = "another string"; // works
 
 ## Control flow
 
-Nouva supports the basic if, else, and while blocks.
+Nouva supports `if`, `else`, `while`, and `for` control blocks.
 
+**If/else block**:
 ```js
 var output;
 if 1 + 2 < 3 {
@@ -145,11 +150,22 @@ else {
     output = "your PC works!";
 }
 ```
+
+**While loop**:
 ```js
-var i = 0;
-var output = "";
-while i < 10 {
-    output += " yay ";
-    i += 1;
+var num = 1;
+while num < 100 {
+    num ^= 2;
+}
+```
+
+**For loop**:
+```js
+for i : 1..10 {
+    print(i);
+}
+val arr = ["a", "b", "c", "d"];
+for x : arr {
+    print("The value is: " + x);
 }
 ```
