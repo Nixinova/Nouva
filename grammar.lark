@@ -7,8 +7,10 @@ unit: statement | block | control_block | function_decl
 block: "{" unit* "}"
 
 control_block: if_block | while_block
-if_block: if_header block [else_header block]
-while_block: while_header block
+if_block: "if" expression block [else_block]
+else_block: "else" [if_block | block]
+while_block: "while" expression block
+
 function_decl: "function" identifier params_list block
 
 // line of code
@@ -47,11 +49,6 @@ comparison_expression: expression comparison_op expression
 parenth_expression: "(" expression ")"
 function_expression: "function" params_list block
 lambda_expression: params_list "=>" expression
-
-// headers
-if_header: "if" expression
-else_header: "else" [if_header]
-while_header: "while" expression
 
 // keywords
 var_keyword: "var" | "val"
