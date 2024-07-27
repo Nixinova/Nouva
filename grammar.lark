@@ -91,7 +91,7 @@ logical_op: "&&" | "||"
 comparison_op: "==" | "!=" | "<" | "<= |" ">" | ">="
 
 // comments
-%ignore /\/\/.*$/
+%ignore /\/\/.*/
 %ignore /\/\*[\s\S]*\*\//
 
 // ignores

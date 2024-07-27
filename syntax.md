@@ -140,14 +140,15 @@ if 1 + 2 < 3 {
 }
 else if true == false {
     output = "also impossible";
-} else {
+}
+else {
     output = "your PC works!";
 }
 ```
 ```js
 var i = 0;
 var output = "";
-while (i < 10) {
+while i < 10 {
     output += " yay ";
     i += 1;
 }
