@@ -7,12 +7,12 @@ unit: statement | block | control_block | function_decl
 block: "{" unit* "}"
 
 control_block: if_block | while_block | for_block
-if_block: "if" expression block [else_block]
-else_block: "else" [if_block | block]
-while_block: "while" expression block
-for_block: "for" identifier ":" expression block
+if_block: /\bif\b/ expression block [else_block]
+else_block: /\belse\b/ [if_block | block]
+while_block: /\bwhile\b/ expression block
+for_block: /\bfor\b/ identifier ":" expression block
 
-function_decl: "function" identifier params_list block
+function_decl: /\bfunction\b/ identifier params_list block
 
 // line of code
 statement: [declaration | definition | expression | reassignment] ";"
@@ -48,18 +48,18 @@ bitwise_expression: expression bitwise_op expression
 logical_expression: expression logical_op expression
 comparison_expression: expression comparison_op expression
 parenth_expression: "(" expression ")"
-function_expression: "function" params_list block
+function_expression: /\bfunction\b/ params_list block
 lambda_expression: params_list "=>" expression
 
 // keywords
-var_keyword: "var" | "val"
+var_keyword: /\bvar\b/ | /\bval\b/
 
 // atomics
 identifier: word_char id_char*
 
-null: "null"
+null: /\bnull\b/
 
-boolean: "true" | "false"
+boolean: /\btrue\b/ | /\bfalse\b/
 
 number: digit+ | digit* "." digit+ | based_number
 based_number: binary_number | octal_number | hex_number

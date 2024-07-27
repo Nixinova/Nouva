@@ -78,8 +78,8 @@ Nouva supports the standard line comments (`//`) and block comments (`/* */`).
 
 Variables in Nouva come in two forms: mutable (*variables*) and immutable (*values*).
 
-- **Variable declaration:** `var <identifier> = <statement>;`
-- **Value declaration:** `val <identifier> = <statement>;`
+- **Variable declaration:** `var _identifier = _statement;`
+- **Value declaration:** `val _identifier = _statement;`
 
 Variables declared using the keyword `var` only may be reassigned after initialisation.
 
