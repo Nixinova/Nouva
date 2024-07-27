@@ -33,7 +33,7 @@ expression: null | boolean | number | string
     | parenth_expression
 
 function_invocation: identifier args_list
-array_getter: identifier "[" expression ["::" expression] "]"
+array_getter: identifier "[" array_range "]"
 map_getter: identifier "." map_key
 
 typed_expression: identifier ":" expression
@@ -78,6 +78,7 @@ map: "{" (map_key ":" expression [","])* "}"
 params_list: "(" (identifier [","])* ")"
 args_list: "(" (expression [","])* ")"
 map_key: identifier | string
+array_range: expression | expression ".." [expression] | [expression] ".." expression
 
 // fundamentals
 any: /./
