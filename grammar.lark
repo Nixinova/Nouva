@@ -88,5 +88,9 @@ bitwise_op: "&" | "|" | "#" | "<<" | ">>"
 logical_op: "&&" | "||"
 comparison_op: "==" | "!=" | "<" | "<= |" ">" | ">="
 
+// comments
+%ignore /\/\/.*$/
+%ignore /\/\*[\s\S]*\*\//
+
 // ignores
 %ignore /\s/
