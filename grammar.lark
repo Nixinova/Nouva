@@ -12,9 +12,10 @@ while_block: while_header block
 function_decl: "function" identifier params_list block
 
 // line of code
-statement: [declaration | definition | expression] ";"
+statement: [declaration | definition | expression | reassignment] ";"
 declaration: var_keyword identifier ["=" expression]
 definition: identifier "=" expression
+reassignment: identifier reassignment_op expression
 
 // expressions
 expression: null | boolean | number | string
@@ -28,8 +29,8 @@ expression: null | boolean | number | string
     | bitwise_expression
     | logical_expression
     | comparison_expression
-    | parenth_expression
     | function_expression | lambda_expression
+    | parenth_expression
 
 function_invocation: identifier args_list
 array_getter: identifier "[" expression ["::" expression] "]"
@@ -84,6 +85,9 @@ digit: /[0-9]/
 word_char: /[a-zA-Z_]/
 string_char: /[^"]/ | "\\" any
 id_char: word_char | digit
+reassignment_op: "+=" | "-=" | "*=" | "/="
+    | "&=" | "|=" | "#=" | "<<=" | ">>="
+    | "&&=" | "||="
 bitwise_op: "&" | "|" | "#" | "<<" | ">>"
 logical_op: "&&" | "||"
 comparison_op: "==" | "!=" | "<" | "<= |" ">" | ">="
