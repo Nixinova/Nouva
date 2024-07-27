@@ -36,7 +36,7 @@ expression: null | boolean | number | string | range
     | parenth_expression
 
 function_invocation: identifier args_list
-array_getter: identifier "[" range "]"
+array_getter: identifier "[" (expression | range) "]"
 map_getter: identifier "." map_key
 
 typed_expression: identifier ":" expression
@@ -49,7 +49,7 @@ logical_expression: expression logical_op expression
 comparison_expression: expression comparison_op expression
 parenth_expression: "(" expression ")"
 function_expression: /\bfunction\b/ params_list block
-lambda_expression: params_list "=>" expression
+lambda_expression: temp params_list "=>" expression
 
 // keywords
 var_keyword: /\bvar\b/ | /\bval\b/
@@ -69,10 +69,10 @@ hex_number: "0x" /[0-9a-fA-F]/+
 
 string: "\"" string_char* "\""
 
-range: expression | expression ".." [expression] | [expression] ".." expression
+range: expression ".." [expression] | [expression] ".." expression
 
 array: "[" ([number ":"] expression [","])* "]"
-map: "{" (map_key ":" expression [","])* "}"
+map: temp "{" (map_key ":" expression [","])* "}"
 
 // language shortcut elements
 params_list: "(" (identifier [","])* ")"
@@ -90,7 +90,9 @@ reassignment_op: "+=" | "-=" | "*=" | "/="
     | "&&=" | "||="
 bitwise_op: "&" | "|" | "#" | "<<" | ">>"
 logical_op: "&&" | "||"
-comparison_op: "==" | "!=" | "<" | "<= |" ">" | ">="
+comparison_op: "==" | "!=" | "<" | "<=" | ">" | ">="
+
+temp: "@"
 
 // comments
 %ignore /\/\/.*/

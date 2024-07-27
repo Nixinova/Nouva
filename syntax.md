@@ -23,7 +23,7 @@ Nouva contains the following literals:
   - Access a single element using `_array[_index]` or `_array[_range]`.
 - **Map**:
   - Keys may be identifiers or strings.
-  - Examples: `{id: "value", id_2: "value 2"}`, `{ "string key": true }`.
+  - Examples: `@{id: "value", id_2: "value 2"}`, `@{ "string key": true }`.
   - Access elements using `_object.id` or `_object."string key"`.
 - **Range:**
   - Creates an iterable range.
@@ -66,7 +66,7 @@ The following are valid expressions in Nouva:
 - An anonymous [function](#Functions) expression.
   - Syntax: `function _functionName(_arguments) { _content; }`.
 - A [lambda](#Functions) expression.
-  - Syntax: `(_arguments) => _expression;`.
+  - Syntax: `@(_arguments) => _expression;`.
 - A parenthetical expression.
   - An expression surrounded with `(` `)` for grouping.
 
@@ -113,7 +113,7 @@ val anonymousFunc = function (a, b) {
 
 **Lambda expression**:
 ```js
-val lambda = (a, b) => a ^ 2 + b ^ 2;
+val lambda = @(a, b) => a ^ 2 + b ^ 2;
 ```
 
 ## Types
