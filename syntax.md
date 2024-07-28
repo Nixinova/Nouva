@@ -63,6 +63,9 @@ The following are valid expressions in Nouva:
 - A reassignment expression
   - Operators: `+=`, `-=`, `*=`, `/=`, `&=`, `|=`, `#=`, `<<=`, `>>=`, `&&=`, `||=`.
   - Examples: `x += 2`, `y /= 10`.
+- A unary reassignment expression.
+  - Operators: `=!=` (invert boolean and save back into variable).
+  - Syntax: `_variable =!=`.
 - An anonymous [function](#Functions) expression.
   - Syntax: `function _functionName(_arguments) { _content; }`.
 - A [lambda](#Functions) expression.

@@ -15,7 +15,7 @@ for_block: /\bfor\b/ identifier ":" expression block
 function_decl: /\bfunction\b/ identifier params_list block
 
 // line of code
-statement: [declaration | definition | expression | reassignment] ";"
+statement: [declaration | definition | expression | reassignment | unary_reassignment] ";"
 declaration: var_keyword identifier ["=" expression]
 definition: identifier "=" expression
 reassignment: identifier reassignment_op expression
@@ -33,7 +33,9 @@ reassignment: identifier reassignment_op expression
         sym_bitrshifteq: ">>="
         sym_logandeq: "&&="
         sym_logoreq: "||="
-
+unary_reassignment: identifier unary_reassignment_op
+    unary_reassignment_op: sym_inverteq
+        sym_inverteq: "=!="
 
 // expressions
 expression: null | boolean | number | string | range

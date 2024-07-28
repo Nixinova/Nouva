@@ -22,6 +22,9 @@ def extract_chars(token):
 
 class ASTTransformer(Transformer):
     """Build AST nodes for the parsed language"""
+
+    def passthrough(self, items): return items
+    def firstitem(self, items): return items[0]
     
     # Root level
     def start(self, items):
@@ -54,6 +57,8 @@ class ASTTransformer(Transformer):
         return {"TOKEN": "definition", "identifier": items[0], "value": items[1]}
     def reassignment(self, items):
         return {"TOKEN": "reassignment", "identifier": items[0], "operator": items[1], "value": items[2]}
+    def unary_reassignment(self, items):
+        return {"TOKEN": "unary_reassignment", "identifier": items[0], "operator": items[1]}
     
     # expressions
     def expression(self, items):
@@ -78,6 +83,12 @@ class ASTTransformer(Transformer):
     def var_keyword(self, items):
         return extract_chars(items)
 
+    # language shortcut elements
+    def args_list(self, items):
+        return items
+    def map_key(self, items):
+        return items[0]
+
     # atomics
     def identifier(self, items):
         return extract_chars(items)
@@ -92,6 +103,14 @@ class ASTTransformer(Transformer):
         return None
     def range(self, items):
         return {"TOKEN": "range", "start": items[0], "end": items[1]}
+    
+    # operators
+    reassignment_op = firstitem
+    unary_reassignment_op = firstitem
+    unary_op = firstitem
+    bitwise_op = firstitem
+    logical_op = firstitem
+    comparison_op = firstitem
     
     # symbols
     def sym_positive(self, items): return "+"
@@ -130,12 +149,7 @@ class ASTTransformer(Transformer):
     def sym_bitrshifteq(self, items): return ">>="
     def sym_logandeq(self, items): return "&&="
     def sym_logoreq(self, items): return "||="
-
-    # language shortcut elements
-    def args_list(self, items):
-        return items
-    def map_key(self, items):
-        return items[0]
+    def sym_inverteq(self, items): return "=!="
 
 def parse_code(code):
     """Parse a code string"""
@@ -161,7 +175,8 @@ if __name__ == '__main__':
     """Test parser functionality"""
 
     code = """
-        1 - 2;
+        var x = true;
+        x =!=;
     """
     ast = parse_code(code)
     debug_print_ast(ast)
