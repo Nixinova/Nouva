@@ -173,31 +173,8 @@ class ASTTransformer(Transformer):
     def sym_logoreq(self, items): return "||="
     def sym_inverteq(self, items): return "=!="
 
-def parse_code(code):
+def parse(code):
     """Parse a code string"""
     tree = parser.parse(code)
     ast = ASTTransformer().transform(tree)
     return ast
-
-def debug_print_ast(node, indent=0):
-    """Recursively print contents of the AST tree."""
-    if isinstance(node, dict):
-        for key, value in node.items():
-            print(' ' * indent + f"{key}:")
-            debug_print_ast(value, indent + 2)
-    elif isinstance(node, list):
-        for i, item in enumerate(node):
-            print(' ' * indent + f"[{i}]")
-            debug_print_ast(item, indent + 2)
-    else:
-        print(' ' * indent + str(node))
-
-
-if __name__ == '__main__':
-    """Test parser functionality"""
-
-    code = """
-        var obj = @{abc: "def", "xyz": true};
-    """
-    ast = parse_code(code)
-    debug_print_ast(ast)

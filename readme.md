@@ -8,3 +8,4 @@ This language uses a Lark grammar: **[grammar.lark](src/grammar.lark)**.
 Use a Lark compiler such as [lark-parser.org](https://www.lark-parser.org/ide/) to preview the Nouva grammar.
 
 Parse Nouva code using **[parser.py](src/parser.py)**.
+Run it from the CLI using [cli.py](src/cli.py): `python src/cli.py "var x = true;"`.
