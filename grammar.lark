@@ -19,6 +19,21 @@ statement: [declaration | definition | expression | reassignment] ";"
 declaration: var_keyword identifier ["=" expression]
 definition: identifier "=" expression
 reassignment: identifier reassignment_op expression
+    reassignment_op: sym_pluseq | sym_mineq | sym_multeq | sym_diveq
+        | sym_bitandeq | sym_bitoreq | sym_bitxoreq | sym_bitlshifteq | sym_bitrshifteq
+        | sym_logandeq | sym_logoreq
+        sym_pluseq: "+="
+        sym_mineq: "-="
+        sym_multeq: "*="
+        sym_diveq: "/="
+        sym_bitandeq: "&="
+        sym_bitoreq: "|="
+        sym_bitxoreq: "#="
+        sym_bitlshifteq: "<<="
+        sym_bitrshifteq: ">>="
+        sym_logandeq: "&&="
+        sym_logoreq: "||="
+
 
 // expressions
 expression: null | boolean | number | string | range
@@ -36,20 +51,49 @@ expression: null | boolean | number | string | range
     | parenth_expression
 
 function_invocation: identifier args_list
-array_getter: identifier "[" (expression | range) "]"
+array_getter: identifier "[" expression "]"
 map_getter: identifier "." map_key
 
 typed_expression: identifier ":" expression
-unary_expression: ("+" | "-" | "!" | "~") expression
-math_expression: expression ("+" | "-") expression
-    | expression ("*" | "/") expression
-    | expression ("^") expression
+unary_expression: unary_op expression
+    unary_op: sym_positive | sym_negative | sym_lognot | sym_bitnot
+        sym_positive: "+"
+        sym_negative: "-"
+        sym_lognot: "!"
+        sym_bitnot: "~"
+math_expression: expression math_op_prio3 expression
+    | expression math_op_prio2 expression
+    | expression math_op_prio1 expression
+    math_op_prio1: sym_exponent
+        sym_exponent: "^"
+    math_op_prio2: sym_multiply | sym_divide
+        sym_multiply: "*"
+        sym_divide: "/"
+    math_op_prio3: sym_add | sym_subtract
+        sym_add: "+"
+        sym_subtract: "-"
 bitwise_expression: expression bitwise_op expression
+    bitwise_op: sym_bitand | sym_bitor | sym_bitxor | sym_bitlshift | sym_bitrshift
+        sym_bitand: "&"
+        sym_bitor: "|"
+        sym_bitxor: "#"
+        sym_bitlshift: "<<"
+        sym_bitrshift: ">>"
 logical_expression: expression logical_op expression
+    logical_op: sym_logand | sym_logor
+        sym_logand: "&&"
+        sym_logor: "||"
 comparison_expression: expression comparison_op expression
-parenth_expression: "(" expression ")"
+    comparison_op: sym_equals | sym_nequals | sym_less | sym_leq | sym_greater | sym_geq
+        sym_equals: "=="
+        sym_nequals: "!="
+        sym_less: "<"
+        sym_leq: "<="
+        sym_greater: ">"
+        sym_geq: ">="
 function_expression: /\bfunction\b/ params_list block
 lambda_expression: temp params_list "=>" expression
+parenth_expression: "(" expression ")"
 
 // keywords
 var_keyword: /\bvar\b/ | /\bval\b/
@@ -85,12 +129,6 @@ digit: /[0-9]/
 word_char: /[a-zA-Z_]/
 string_char: /[^"]/ | "\\" any
 id_char: word_char | digit
-reassignment_op: "+=" | "-=" | "*=" | "/="
-    | "&=" | "|=" | "#=" | "<<=" | ">>="
-    | "&&=" | "||="
-bitwise_op: "&" | "|" | "#" | "<<" | ">>"
-logical_op: "&&" | "||"
-comparison_op: "==" | "!=" | "<" | "<=" | ">" | ">="
 
 temp: "@"
 
