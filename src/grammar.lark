@@ -109,8 +109,8 @@ identifier: word_char id_char*
 null: /\bnull\b/
 boolean: /\btrue\b/ | /\bfalse\b/
 number: based_number | numeral
-    numeral: [[int] "."] int
-    based_number: int "_" /[0-9a-zA-Z]*\.?[0-9a-zA-Z]+/
+    numeral: /\d*\.?\d+/
+    based_number: /\d+_[0-9a-zA-Z]*\.?[0-9a-zA-Z]+/
 string: "\"" string_char* "\""
 array: "[" ([number ":"] expression [","])* "]"
 map: "{" (map_key ":" expression [","])* "}"
@@ -124,7 +124,6 @@ map_key: identifier | string
 // fundamentals
 any: /./
 digit: /[0-9]/
-int: digit+
 word_char: /[a-zA-Z_]/
 string_char: /[^"]/ | "\\" any
 id_char: word_char | digit

@@ -122,12 +122,11 @@ class ASTTransformer(Transformer):
         # note: includes base prefix (e.g. 0x)
         return {"TOKEN": "number", "value": items[0]}
     def based_number(self, items):
-        return {"TOKEN": "based_number", "base": items[0], "number": items[1]}
+        [base, value] = items[0].split('_')
+        return {"TOKEN": "based_number", "base": base, "value": value}
     def numeral(self, items):
         return extract_chars(items)
     digit = firstitem
-    def int(self, items):
-        return extract_chars(items)
     
     def string(self, items):
         return extract_chars(items)
