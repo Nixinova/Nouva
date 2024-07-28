@@ -120,18 +120,14 @@ class ASTTransformer(Transformer):
 
     def number(self, items):
         # note: includes base prefix (e.g. 0x)
-        return {"TOKEN": "number", "value": extract_chars(items) or items}
-    numeral = firstitem
+        return {"TOKEN": "number", "value": items[0]}
+    def based_number(self, items):
+        return {"TOKEN": "based_number", "base": items[0], "number": items[1]}
+    def numeral(self, items):
+        return extract_chars(items)
     digit = firstitem
-    based_number = firstitem
-    def binary_number(self, items):
-        return {"TOKEN": "based_number", "number": items[1], "base": "2"}
-    def octal_number(self, items):
-        return {"TOKEN": "based_number", "number": items[1], "base": "8"}
-    def hex_number(self, items):
-        return {"TOKEN": "based_number", "number": items[1], "base": "16"}
-    def arbitr_base_number(self, items):
-        return {"TOKEN": "based_number", "number": items[0], "base": items[1]}
+    def int(self, items):
+        return extract_chars(items)
     
     def string(self, items):
         return extract_chars(items)

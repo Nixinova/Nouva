@@ -12,10 +12,9 @@ Nouva contains the following literals:
 - **Boolean**:
   - `true`, `false`
 - **Number**:
-  - Supports binary, octal, hex, and arbitrary bases.
-  - Prefixes: `0b` (binary), `0o` (octal), `0x` (hex), `0n` (arbitrary).
-  - Arbitrary base syntax: `0n<number>_<base>`.
-  - Examples: `190`, `0b1011`, `0o7`, `0x4F`, `0n1A_12` ('1A' in base 12 = 22).
+  - Encompasses both integer and floating-point.
+  - Supports any base.
+  - Examples: `190`, `3.14`, `2_1.011` ('1.011' base 2), `8_17` ('17' base 8), `16_4F` ('4F' base 16), `12_1.A` ('1.A' base 12).
 - **String**:
   - Must be double quoted. Can go across multiple lines.
   - Example: `"contents"`.
