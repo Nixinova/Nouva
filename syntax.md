@@ -60,12 +60,6 @@ The following are valid expressions in Nouva:
 - A comparison expression.
   - Operators: `==`, `!=`, `<`, `<=`, `>`, `>=`.
   - Example: `1 < 2`, `3 + 4 != 5`.
-- A reassignment expression
-  - Operators: `+=`, `-=`, `*=`, `/=`, `&=`, `|=`, `#=`, `<<=`, `>>=`, `&&=`, `||=`.
-  - Examples: `x += 2`, `y /= 10`.
-- A unary reassignment expression.
-  - Operators: `=!=` (invert boolean and save back into variable).
-  - Syntax: `_variable =!=`.
 - An anonymous [function](#Functions) expression.
   - Syntax: `function _functionName(_arguments) { _content; }`.
 - A [lambda](#Functions) expression.
@@ -92,6 +86,20 @@ num = 3;
 num += 6;
 num /= 2;
 ```
+
+## Reassignment
+
+Only variables declared with `var` may be reassigned.
+
+Reassignments may be *binary* (having both an operator and a complement) or *unary* (having only an operator).
+
+- **Binary reassignment**:
+  - Operators: `+=`, `-=`, `*=`, `/=`, `&=`, `|=`, `#=`, `<<=`, `>>=`, `&&=`, `||=`.
+  - Examples: `x += 2`, `y /= 10`.
+- **Unary reassignment**:
+  - Operators: `=!=` (invert boolean and save back into variable).
+  - Syntax: `_variable =!=`.
+  - Example: `var x = true; x =!=; // x is now false`.
 
 ## Functions
 
