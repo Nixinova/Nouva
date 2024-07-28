@@ -73,18 +73,14 @@ class ASTTransformer(Transformer):
     
     # expressions
     expression_list = passthrough
+    
     def expression(self, items):
         return items[0]
-    def function_invocation(self, items):
-        return {"TOKEN": "function_invocation", "function": items[0], "args": items[1]}
     
     definition_expression = passthrough
     
-    def math_expression(self, items):
-        return {"TOKEN": "math_expression", "lhs": items[0], "operator": items[1], "rhs": items[2]}
-    def parenth_expression(self, items):
-        return items[0]
-
+    def function_invocation(self, items):
+        return {"TOKEN": "function_invocation", "function": items[0], "args": items[1]}
     def array_getter(self, items):
         return {"TOKEN": "array_getter", "identifier": items[0], "expression": items[1] }
     def map_getter(self, items):
@@ -92,37 +88,66 @@ class ASTTransformer(Transformer):
     
     def typed_expression(self, items):
         return {"TOKEN": "typed_expression", "type": items[0], "value": items[1]}
+    def math_expression(self, items):
+        return {"TOKEN": "math_expression", "lhs": items[0], "operator": items[1], "rhs": items[2]}
+    def bitwise_expression(self, items):
+        return {"TOKEN": "bitwise_expression", "lhs": items[0], "operator": items[1], "rhs": items[2]}
+    def logical_expression(self, items):
+        return {"TOKEN": "logical_expression", "lhs": items[0], "operator": items[1], "rhs": items[2]}
+    def comparison_expression(self, items):
+        return {"TOKEN": "comparison_expression", "lhs": items[0], "operator": items[1], "rhs": items[2]}
+    def function_expression(self, items):
+        return {"TOKEN": "function_expression", "params": items[1], "body": items[2]}
+    def lambda_expression(self, items):
+        return {"TOKEN": "lambda_expression", "params": items[0], "body": items[1]}
+    def parenth_expression(self, items):
+        return items[0]
     
     # keywords
     def var_keyword(self, items):
         return extract_chars(items)
 
     # language shortcut elements
+    params_list = passthrough
     def args_list(self, items):
         return items
     def map_key(self, items):
         return items[0]
-
+    
     # atomics
     def identifier(self, items):
         return extract_chars(items)
+
     def number(self, items):
         # note: includes base prefix (e.g. 0x)
-        return extract_chars(items)
+        return {"TOKEN": "number", "value": extract_chars(items) or items}
+    based_number = firstitem
+    def binary_number(self, items):
+        return {"TOKEN": "based_number", "base": "2", "number": items[1]}
+    def octal_number(self, items):
+        return {"TOKEN": "based_number", "base": "8", "number": items[1]}
+    def hex_number(self, items):
+        return {"TOKEN": "based_number", "base": "16", "number": items[1]}
+    
     def string(self, items):
         return extract_chars(items)
+    
     def boolean(self, items):
         return items[0] == "true"
+    
     def null(self, items):
         return None
+    
     def array(self, items):
         indices = [item for i, item in enumerate(items) if i % 2 == 0]
         values = [item for i, item in enumerate(items) if i % 2 == 1]
         return {"TOKEN": "array", "indices": indices, "values": values}
+    
     def map(self, items):
         keys = [item for i, item in enumerate(items) if i % 2 == 0]
         values = [item for i, item in enumerate(items) if i % 2 == 1]
         return {"TOKEN": "map", "keys": keys, "values": values}
+    
     def range(self, items):
         return {"TOKEN": "range", "start": items[0], "end": items[1]}
     
@@ -173,6 +198,10 @@ class ASTTransformer(Transformer):
     def sym_logandeq(self, items): return "&&="
     def sym_logoreq(self, items): return "||="
     def sym_inverteq(self, items): return "=!="
+    
+    def bin_prefix(self, items): return "0b"
+    def oct_prefix(self, items): return "0o"
+    def hex_prefix(self, items): return "0x"
 
 def parse(code):
     """Parse a code string"""
