@@ -110,14 +110,16 @@ null: /\bnull\b/
 
 boolean: /\btrue\b/ | /\bfalse\b/
 
-number: digit+ | digit* "." digit+ | based_number
-based_number: binary_number | octal_number | hex_number
-binary_number: bin_prefix /[0-1]/+
+number: numeral | based_number
+numeral: digit+ | digit* "." digit+
+based_number: binary_number | octal_number | hex_number | arbitr_base_number
+binary_number: bin_prefix /[0-1]*\.?[0-1]+/
     bin_prefix: "0b"
-octal_number: oct_prefix /[0-8]/+
+octal_number: oct_prefix /[0-8]*\.?[0-8]+/
     oct_prefix: "0o"
-hex_number: hex_prefix /[0-9a-fA-F]/+
+hex_number: hex_prefix /[0-9a-fA-F]*\.?[0-9a-fA-F]+/
     hex_prefix: "0x"
+arbitr_base_number: "0n" /[0-9a-zA-Z]*\.?[0-9a-zA-Z]+/ "_" digit+
 
 string: "\"" string_char* "\""
 

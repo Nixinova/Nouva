@@ -116,18 +116,22 @@ class ASTTransformer(Transformer):
     
     # atomics
     def identifier(self, items):
-        return extract_chars(items)
+        return {"TOKEN": "identifier", "name": extract_chars(items)}
 
     def number(self, items):
         # note: includes base prefix (e.g. 0x)
         return {"TOKEN": "number", "value": extract_chars(items) or items}
+    numeral = firstitem
+    digit = firstitem
     based_number = firstitem
     def binary_number(self, items):
-        return {"TOKEN": "based_number", "base": "2", "number": items[1]}
+        return {"TOKEN": "based_number", "number": items[1], "base": "2"}
     def octal_number(self, items):
-        return {"TOKEN": "based_number", "base": "8", "number": items[1]}
+        return {"TOKEN": "based_number", "number": items[1], "base": "8"}
     def hex_number(self, items):
-        return {"TOKEN": "based_number", "base": "16", "number": items[1]}
+        return {"TOKEN": "based_number", "number": items[1], "base": "16"}
+    def arbitr_base_number(self, items):
+        return {"TOKEN": "based_number", "number": items[0], "base": items[1]}
     
     def string(self, items):
         return extract_chars(items)
