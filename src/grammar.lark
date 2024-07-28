@@ -60,7 +60,7 @@ definition_expression: expression | map
 
 function_invocation: identifier "(" expression_list ")"
 array_getter: identifier "[" expression "]"
-map_getter: identifier "." map_key
+map_getter: identifier "." map_key ["(" expression_list ")"]
 
 typed_expression: identifier ":" expression
 unary_expression: unary_op expression

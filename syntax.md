@@ -26,7 +26,8 @@ Nouva contains the following literals:
   - Keys may be identifiers or strings.
   - Examples: `{id: "value", id_2: "value 2"}`, `{ "string key": true }`.
   - Access elements using `_object.id` or `_object."string key"`.
-- **Range:**
+  - Invoke functions using  `_object._method(_args)` or `_object."method name"(_args)`.
+- **Range**:
   - Creates an iterable range.
   - Syntax: `_start.._end`, where either `_start` or `_end` (but not both) may be left out.
   - Examples: `2..4`, `-3..3`.

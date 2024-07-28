@@ -84,8 +84,11 @@ class ASTTransformer(Transformer):
     def array_getter(self, items):
         return {"TOKEN": "array_getter", "identifier": items[0], "expression": items[1] }
     def map_getter(self, items):
-        return {"TOKEN": "map_getter", "identifier": items[0], "key": items[1] }
-    
+        if items[2] == None:
+            return {"TOKEN": "map_getter", "identifier": items[0], "key": items[1] }
+        else:
+            return {"TOKEN": "method_call", "identifier": items[0], "key": items[1], "arguments": items[2] }
+            
     def typed_expression(self, items):
         return {"TOKEN": "typed_expression", "type": items[0], "value": items[1]}
     def math_expression(self, items):
