@@ -6,11 +6,15 @@ unit: statement | block | control_block | function_decl
 
 block: "{" unit* "}"
 
-control_block: if_block | while_block | for_block
+control_block: if_block | while_block | for_block | switch_block
 if_block: /\bif\b/ expression block [else_block]
 else_block: /\belse\b/ [if_block | block]
 while_block: /\bwhile\b/ expression block
 for_block: /\bfor\b/ identifier ":" expression block
+switch_block: /\bswitch\b/ expression "{" switch_body "}"
+    switch_body: (switch_case | switch_default)*
+        switch_case: /\bcase\b/ expression_list block
+        switch_default: /\bdefault\b/ block
 
 function_decl: /\bfunction\b/ identifier params_list block
 
@@ -52,7 +56,7 @@ expression: null | boolean | number | string | range
     | function_expression | lambda_expression
     | parenth_expression
 
-function_invocation: identifier args_list
+function_invocation: identifier "(" expression_list ")"
 array_getter: identifier "[" expression "]"
 map_getter: identifier "." map_key
 
@@ -118,8 +122,8 @@ array: "[" ([number ":"] expression [","])* "]"
 map: temp "{" (map_key ":" expression [","])* "}"
 
 // language shortcut elements
+expression_list: (expression [","])*
 params_list: "(" (identifier [","])* ")"
-args_list: "(" (expression [","])* ")"
 map_key: identifier | string
 
 // fundamentals

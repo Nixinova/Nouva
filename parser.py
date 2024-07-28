@@ -45,6 +45,15 @@ class ASTTransformer(Transformer):
         return {"TOKEN": "while_block", "test": items[1], "body": items[2]}
     def for_block(self, items):
         return {"TOKEN": "for_block", "identifier": items[1], "range": items[2], "body": items[3]}
+    def switch_block(self, items):
+        return {"TOKEN": "switch_block", "expression": items[1], "body": items[2]}
+
+    switch_body = passthrough
+    def switch_case(self, items):
+        return {"TOKEN": "switch_case", "cases": items[1], "body": items[2]}
+    def switch_default(self, items):
+        return {"TOKEN": "switch_default", "body": items[1]}
+    
     def function_decl(self, items):
         return {"TOKEN": "function_decl", "identifier": items[1], "param_list": items[2], "body": items[3]}
     
@@ -61,6 +70,7 @@ class ASTTransformer(Transformer):
         return {"TOKEN": "unary_reassignment", "identifier": items[0], "operator": items[1]}
     
     # expressions
+    expression_list = passthrough
     def expression(self, items):
         return items[0]
     def function_invocation(self, items):
@@ -176,7 +186,17 @@ if __name__ == '__main__':
 
     code = """
         var x = true;
-        x =!=;
+        switch x {
+            case true, null {
+                print("yes");
+            }
+            case false {
+                print("ok");
+            }
+            default {
+                print("invalid");
+            }
+        }
     """
     ast = parse_code(code)
     debug_print_ast(ast)

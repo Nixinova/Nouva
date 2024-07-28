@@ -146,7 +146,7 @@ thisIsAString = "another string"; // works
 
 ## Control flow
 
-Nouva supports `if`, `else`, `while`, and `for` control blocks.
+Nouva supports `if`, `else`, `while`, `for`, and `switch` control blocks.
 
 **If/else block**:
 ```js
@@ -178,5 +178,18 @@ for i : 1..10 {
 val arr = ["a", "b", "c", "d"];
 for x : arr {
     print("The value is: " + x);
+}
+```
+
+**Switch block:**
+```js
+val value = true;
+switch (value) {
+  case true, false {
+    print("valid")
+  }
+  default {
+    print("invalid");
+  }
 }
 ```
