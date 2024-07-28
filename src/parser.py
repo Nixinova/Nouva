@@ -113,6 +113,15 @@ class ASTTransformer(Transformer):
         return items[0] == "true"
     def null(self, items):
         return None
+    def array(self, items):
+        indices = [item for i, item in enumerate(items) if i % 2 == 0]
+        values = [item for i, item in enumerate(items) if i % 2 == 1]
+        return {"TOKEN": "array", "indices": indices, "values": values}
+    def map(self, items):
+        items = items[1:] # ignore token 'temp'
+        keys = [item for i, item in enumerate(items) if i % 2 == 0]
+        values = [item for i, item in enumerate(items) if i % 2 == 1]
+        return {"TOKEN": "map", "keys": keys, "values": values}
     def range(self, items):
         return {"TOKEN": "range", "start": items[0], "end": items[1]}
     
@@ -131,12 +140,13 @@ class ASTTransformer(Transformer):
     def sym_bitnot(self, items): return "~"
 
     def sym_add(self, items): return "/"
-    def sym_subtract(self, items): return "+"
+    def sym_add(self, items): return "+"
+    def sym_subtract(self, items): return "-"
     def sym_multiply(self, items): return "*"
     def sym_divide(self, items): return "/"
     def sym_exponent(self, items): return "^"
 
-    def sym_bitand(self, items): return "-"
+    def sym_bitand(self, items): return "&"
     def sym_bitor(self, items): return "|"
     def sym_bitxor(self, items): return "#"
     def sym_bitlshift(self, items): return "<<"
@@ -187,18 +197,7 @@ if __name__ == '__main__':
     """Test parser functionality"""
 
     code = """
-        var x = true;
-        switch x {
-            case true, null {
-                print("yes");
-            }
-            case false {
-                print("ok");
-            }
-            default {
-                print("invalid");
-            }
-        }
+        var obj = @{abc: "def", "xyz": true};
     """
     ast = parse_code(code)
     debug_print_ast(ast)
