@@ -1,7 +1,9 @@
 from lark import Lark, Transformer, v_args, Tree, Token
 
+GRAMMAR_FILE = "src/grammar.lark"
+
 # Load grammar from file
-with open('grammar.lark', 'r') as f:
+with open(GRAMMAR_FILE, 'r') as f:
     grammar = f.read()
 
 # Create parser
