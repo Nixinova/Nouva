@@ -2,9 +2,11 @@
 start: unit*
 
 // blocks of code
-unit: statement | block | control_block | function_decl
+unit: statement | block | control_block | function_decl | class_decl
 
 block: "{" unit* "}"
+func_block: "{" (unit | return_statement)* "}"
+    return_statement: /\breturn\b/ expression ";"
 
 control_block: if_block | while_block | for_block | switch_block
 if_block: /\bif\b/ expression block [else_block]
@@ -16,7 +18,14 @@ switch_block: /\bswitch\b/ expression "{" switch_body "}"
         switch_case: /\bcase\b/ expression_list block
         switch_default: /\bdefault\b/ block
 
-function_decl: /\bfunction\b/ identifier params_list block
+function_decl: /\bfunction\b/ identifier params_list func_block
+class_decl: /\bclass\b/ identifier "{" class_body "}"
+    class_body: (instance_statement | method | constructor)*
+        instance_statement: instance_declaration | instance_definition
+            instance_declaration: var_keyword identifier ["=" definition_expression] ";"
+            instance_definition: identifier "=" definition_expression ";"
+        method:  identifier params_list func_block
+        constructor: params_list func_block
 
 // line of code
 statement: [declaration | definition | expression | reassignment | unary_reassignment] ";"
@@ -104,7 +113,8 @@ parenth_expression: "(" expression ")"
 var_keyword: /\bvar\b/ | /\bval\b/
 
 // atomics
-identifier: word_char id_char*
+identifier: [sym_private] word_char id_char*
+    sym_private: "#"
 
 null: /\bnull\b/
 boolean: /\btrue\b/ | /\bfalse\b/

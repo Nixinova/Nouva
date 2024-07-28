@@ -58,6 +58,15 @@ class ASTTransformer(Transformer):
     
     def function_decl(self, items):
         return {"TOKEN": "function_decl", "identifier": items[1], "param_list": items[2], "body": items[3]}
+    func_block = passthrough
+    
+    def class_decl(self, items):
+        return {"TOKEN": "class_decl", "identifier": items[1], "body": items[2]}
+    class_body = passthrough
+    def constructor(self, items):
+        return {"TOKEN": "constructor", "params": items[0], "body": items[1]}
+    def method(self, items):
+        return {"TOKEN": "method", "identifier": items[0], "params": items[1], "body": items[2]}
     
     # line of code
     def statement(self, items):
@@ -70,6 +79,8 @@ class ASTTransformer(Transformer):
         return {"TOKEN": "reassignment", "identifier": items[0], "operator": items[1], "value": items[2]}
     def unary_reassignment(self, items):
         return {"TOKEN": "unary_reassignment", "identifier": items[0], "operator": items[1]}
+    def return_statement(self, items):
+        return {"TOKEN": "return_statement", "value": items[1]}
     
     # expressions
     expression_list = passthrough
@@ -122,7 +133,6 @@ class ASTTransformer(Transformer):
         return {"TOKEN": "identifier", "name": extract_chars(items)}
 
     def number(self, items):
-        # note: includes base prefix (e.g. 0x)
         return {"TOKEN": "number", "value": items[0]}
     def based_number(self, items):
         [base, value] = items[0].split('_')
@@ -200,6 +210,8 @@ class ASTTransformer(Transformer):
     def sym_logandeq(self, items): return "&&="
     def sym_logoreq(self, items): return "||="
     def sym_inverteq(self, items): return "=!="
+    
+    def sym_private(self, items): return "#"
     
     def bin_prefix(self, items): return "0b"
     def oct_prefix(self, items): return "0o"

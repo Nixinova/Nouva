@@ -129,6 +129,26 @@ val anonymousFunc = function (a, b) {
 val lambda = @(a, b) => a ^ 2 + b ^ 2;
 ```
 
+## Classes
+
+Classes may be created with constructors and methods.
+Members are public by default; use `#` to make an identifier private.
+
+```js
+class Foo {
+  // private instance variable:
+  var #x;
+  // constructor:
+  (num) {
+    #x = num;
+  }
+  // method:
+  getValue() {
+    return #x;
+  }
+}
+```
+
 ## Types
 
 Variables are assigned whatever type they are given on initialisation.
