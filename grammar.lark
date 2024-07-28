@@ -61,17 +61,14 @@ unary_expression: unary_op expression
         sym_negative: "-"
         sym_lognot: "!"
         sym_bitnot: "~"
-math_expression: expression math_op_prio3 expression
-    | expression math_op_prio2 expression
-    | expression math_op_prio1 expression
-    math_op_prio1: sym_exponent
-        sym_exponent: "^"
-    math_op_prio2: sym_multiply | sym_divide
-        sym_multiply: "*"
-        sym_divide: "/"
-    math_op_prio3: sym_add | sym_subtract
-        sym_add: "+"
-        sym_subtract: "-"
+math_expression: expression (sym_exponent) expression
+    | expression (sym_multiply | sym_divide) expression
+    | expression (sym_add | sym_subtract) expression
+    sym_add: "+"
+    sym_subtract: "-"
+    sym_multiply: "*"
+    sym_divide: "/"
+    sym_exponent: "^"
 bitwise_expression: expression bitwise_op expression
     bitwise_op: sym_bitand | sym_bitor | sym_bitxor | sym_bitlshift | sym_bitrshift
         sym_bitand: "&"

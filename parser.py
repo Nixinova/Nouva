@@ -33,17 +33,17 @@ class ASTTransformer(Transformer):
     def block(self, items):
         return {"TOKEN": "block", "body": items}
     def control_block(self, items):
-        return {"TOKEN": "control_block", "body": items}
+        return {"TOKEN": "control_block", "body": items[0]}
     def if_block(self, items):
-        {"TOKEN": "if_block", "test": items[0], "iftrue": items[1], "iffalse": items[2] or None}
+        return {"TOKEN": "if_block", "test": items[1], "iftrue": items[2], "iffalse": items[3] or None}
     def else_block(self, items):
         return {"TOKEN": "else_block", "body": items}
     def while_block(self, items):
-        return {"TOKEN": "while_block", "test": items[0], "body": items[1]}
+        return {"TOKEN": "while_block", "test": items[1], "body": items[2]}
     def for_block(self, items):
         return {"TOKEN": "for_block", "identifier": items[1], "range": items[2], "body": items[3]}
     def function_decl(self, items):
-        return {"TOKEN": "function_decl", "identifier": items[0], "param_list": items[1], "body": items[2]}
+        return {"TOKEN": "function_decl", "identifier": items[1], "param_list": items[2], "body": items[3]}
     
     # line of code
     def statement(self, items):
@@ -60,6 +60,11 @@ class ASTTransformer(Transformer):
         return items[0]
     def function_invocation(self, items):
         return {"TOKEN": "function_invocation", "function": items[0], "args": items[1]}
+    
+    def math_expression(self, items):
+        return {"TOKEN": "math_expression", "lhs": items[0], "operator": items[1], "rhs": items[2]}
+    def parenth_expression(self, items):
+        return items[0]
 
     def array_getter(self, items):
         return {"TOKEN": "array_getter", "identifier": items[0], "expression": items[1] }
@@ -82,12 +87,50 @@ class ASTTransformer(Transformer):
     def string(self, items):
         return extract_chars(items)
     def boolean(self, items):
-        return token == "true"
+        return items[0] == "true"
     def null(self, items):
         return None
     def range(self, items):
         return {"TOKEN": "range", "start": items[0], "end": items[1]}
     
+    # symbols
+    def sym_positive(self, items): return "+"
+    def sym_negative(self, items): return "-"
+    def sym_lognot(self, items): return "!"
+    def sym_bitnot(self, items): return "~"
+
+    def sym_add(self, items): return "/"
+    def sym_subtract(self, items): return "+"
+    def sym_multiply(self, items): return "*"
+    def sym_divide(self, items): return "/"
+    def sym_exponent(self, items): return "^"
+
+    def sym_bitand(self, items): return "-"
+    def sym_bitor(self, items): return "|"
+    def sym_bitxor(self, items): return "#"
+    def sym_bitlshift(self, items): return "<<"
+    def sym_bitrshift(self, items): return ">>"
+    def sym_logand(self, items): return "&&"
+    def sym_logor(self, items): return "||"
+    def sym_equals(self, items): return "=="
+    def sym_nequals(self, items): return "!="
+    def sym_less(self, items): return "<"
+    def sym_leq(self, items): return "<="
+    def sym_greater(self, items): return ">"
+    def sym_geq(self, items): return ">="
+    
+    def sym_pluseq(self, items): return "+="
+    def sym_mineq(self, items): return "-="
+    def sym_multeq(self, items): return "*="
+    def sym_diveq(self, items): return "/="
+    def sym_bitandeq(self, items): return "&="
+    def sym_bitoreq(self, items): return "|="
+    def sym_bitxoreq(self, items): return "#="
+    def sym_bitlshifteq(self, items): return "<<="
+    def sym_bitrshifteq(self, items): return ">>="
+    def sym_logandeq(self, items): return "&&="
+    def sym_logoreq(self, items): return "||="
+
     # language shortcut elements
     def args_list(self, items):
         return items
@@ -118,9 +161,7 @@ if __name__ == '__main__':
     """Test parser functionality"""
 
     code = """
-        for i : 1..10 {
-            print(i);
-        }
+        1 - 2;
     """
     ast = parse_code(code)
     debug_print_ast(ast)
