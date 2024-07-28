@@ -23,7 +23,7 @@ Nouva contains the following literals:
   - Access a single element using `_array[_index]` or `_array[_range]`.
 - **Map**:
   - Keys may be identifiers or strings.
-  - Examples: `@{id: "value", id_2: "value 2"}`, `@{ "string key": true }`.
+  - Examples: `{id: "value", id_2: "value 2"}`, `{ "string key": true }`.
   - Access elements using `_object.id` or `_object."string key"`.
 - **Range:**
   - Creates an iterable range.

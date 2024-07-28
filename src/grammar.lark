@@ -20,8 +20,8 @@ function_decl: /\bfunction\b/ identifier params_list block
 
 // line of code
 statement: [declaration | definition | expression | reassignment | unary_reassignment] ";"
-declaration: var_keyword identifier ["=" expression]
-definition: identifier "=" expression
+declaration: var_keyword identifier ["=" definition_expression]
+definition: identifier "=" definition_expression
 reassignment: identifier reassignment_op expression
     reassignment_op: sym_pluseq | sym_mineq | sym_multeq | sym_diveq
         | sym_bitandeq | sym_bitoreq | sym_bitxoreq | sym_bitlshifteq | sym_bitrshifteq
@@ -43,7 +43,7 @@ unary_reassignment: identifier unary_reassignment_op
 
 // expressions
 expression: null | boolean | number | string | range
-    | array | map
+    | array
     | identifier
     | function_invocation
     | array_getter | map_getter
@@ -55,6 +55,8 @@ expression: null | boolean | number | string | range
     | comparison_expression
     | function_expression | lambda_expression
     | parenth_expression
+
+definition_expression: expression | map
 
 function_invocation: identifier "(" expression_list ")"
 array_getter: identifier "[" expression "]"
@@ -95,7 +97,7 @@ comparison_expression: expression comparison_op expression
         sym_greater: ">"
         sym_geq: ">="
 function_expression: /\bfunction\b/ params_list block
-lambda_expression: temp params_list "=>" expression
+lambda_expression: "@" params_list "=>" expression
 parenth_expression: "(" expression ")"
 
 // keywords
@@ -119,7 +121,7 @@ string: "\"" string_char* "\""
 range: expression ".." [expression] | [expression] ".." expression
 
 array: "[" ([number ":"] expression [","])* "]"
-map: temp "{" (map_key ":" expression [","])* "}"
+map: "{" (map_key ":" expression [","])* "}"
 
 // language shortcut elements
 expression_list: (expression [","])*
@@ -132,8 +134,6 @@ digit: /[0-9]/
 word_char: /[a-zA-Z_]/
 string_char: /[^"]/ | "\\" any
 id_char: word_char | digit
-
-temp: "@"
 
 // comments
 %ignore /\/\/.*/

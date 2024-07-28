@@ -78,6 +78,8 @@ class ASTTransformer(Transformer):
     def function_invocation(self, items):
         return {"TOKEN": "function_invocation", "function": items[0], "args": items[1]}
     
+    definition_expression = passthrough
+    
     def math_expression(self, items):
         return {"TOKEN": "math_expression", "lhs": items[0], "operator": items[1], "rhs": items[2]}
     def parenth_expression(self, items):
@@ -118,7 +120,6 @@ class ASTTransformer(Transformer):
         values = [item for i, item in enumerate(items) if i % 2 == 1]
         return {"TOKEN": "array", "indices": indices, "values": values}
     def map(self, items):
-        items = items[1:] # ignore token 'temp'
         keys = [item for i, item in enumerate(items) if i % 2 == 0]
         values = [item for i, item in enumerate(items) if i % 2 == 1]
         return {"TOKEN": "map", "keys": keys, "values": values}
