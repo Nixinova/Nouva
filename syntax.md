@@ -2,8 +2,6 @@
 
 This is a guide to the syntax of Nouva.
 
-## 
-
 ## Literals
 
 Nouva contains the following literals:
@@ -94,14 +92,17 @@ Nouva supports the standard line comments (`//`) and block comments (`/* */`).
 
 Variables in Nouva come in two forms: mutable (*variables*) and immutable (*values*).
 
-- **Variable declaration:** `var _identifier = _statement;`
-- **Value declaration:** `val _identifier = _statement;`
+- **Variable declaration:** `var _identifier : _type = _expression;`
+  - Both the type and the expression are optional.
+- **Value declaration:** `val _identifier : _type = _expression;`
+  - Specifying the type is optional.
 
 ## Reassignment
 
 Only variables declared with `var` may be reassigned.
 
 ```kt
+
 val a = 1;
 var b = 1;
 a = 2; // ERROR

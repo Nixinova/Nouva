@@ -71,8 +71,17 @@ class ASTTransformer(Transformer):
     # line of code
     def statement(self, items):
         return items[0]
+    
     def declaration(self, items):
-        return {"TOKEN": "declaration", "vartype": items[0], "identifier": items[1], "value": items[2] or None}
+        return {"TOKEN": "declaration", "varword": items[0], "identifier": items[1], "body": items[2] or None}
+    declaration_contents = passthrough
+    def typed_decl(self, items):
+        return {"TOKEN": "declaration_body", "type": items[0], "value": None}
+    def valued_decl(self, items):
+        return {"TOKEN": "declaration_body", "type": None, "value": items[0]}
+    def typed_valued_decl(self, items):
+        return {"TOKEN": "declaration_body", "type": items[0], "value": items[1]}
+    
     def definition(self, items):
         return {"TOKEN": "definition", "identifier": items[0], "value": items[1]}
     def reassignment(self, items):

@@ -30,7 +30,11 @@ class_decl: /\bclass\b/ identifier "{" class_body "}"
 
 // line of code
 statement: [declaration | definition | reassignment | unary_reassignment] ";"
-declaration: var_keyword identifier ["=" definition_expression]
+declaration: var_keyword identifier [declaration_contents]
+    declaration_contents: typed_decl | valued_decl | typed_valued_decl
+        typed_decl: ":" identifier
+        valued_decl: "=" definition_expression
+        typed_valued_decl: ":" identifier "=" definition_expression
 definition: identifier "=" definition_expression
 reassignment: identifier reassignment_op expression
     reassignment_op: sym_pluseq | sym_mineq | sym_multeq | sym_diveq
