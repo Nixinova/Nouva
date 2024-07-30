@@ -110,10 +110,13 @@ class ASTTransformer(Transformer):
         return {"TOKEN": "logical_expression", "lhs": items[0], "operator": items[1], "rhs": items[2]}
     def comparison_expression(self, items):
         return {"TOKEN": "comparison_expression", "lhs": items[0], "operator": items[1], "rhs": items[2]}
+    
+    block_expression = passthrough
     def function_expression(self, items):
         return {"TOKEN": "function_expression", "params": items[1], "body": items[2]}
     def lambda_expression(self, items):
         return {"TOKEN": "lambda_expression", "params": items[1], "body": items[2]}
+    
     def parenth_expression(self, items):
         return items[0]
     

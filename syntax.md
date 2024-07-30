@@ -2,6 +2,8 @@
 
 This is a guide to the syntax of Nouva.
 
+## 
+
 ## Literals
 
 Nouva contains the following literals:
@@ -66,6 +68,21 @@ The following are valid expressions in Nouva:
   - Syntax: `function _functionName(_arguments) { _content; }`.
 - A [lambda](#Functions) expression.
   - Syntax: `@(_arguments) => _expression;`.
+- A switch expression.
+  - Syntax: `switch (_expression) { case _X -> _contents; };`.
+  - The contents of a case row may be either an expression or a block.
+  - Example:
+    ```c
+    switch (true) {
+      // case expression:
+      true -> print("Accepted");
+      // case block:
+      false -> {
+        output = false;
+        print ("Fail");
+      }
+    }
+    ```
 - A parenthetical expression.
   - An expression surrounded with `(` `)` for grouping.
 
@@ -212,8 +229,6 @@ switch (value) {
   case true, false {
     print("valid")
   }
-  default {
-    print("invalid");
-  }
+  default -> print("invalid");
 }
 ```

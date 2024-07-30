@@ -15,8 +15,9 @@ while_block: /\bwhile\b/ expression block
 for_block: /\bfor\b/ identifier ":" expression block
 switch_block: /\bswitch\b/ expression "{" switch_body "}"
     switch_body: (switch_case | switch_default)*
-        switch_case: /\bcase\b/ expression_list block
-        switch_default: /\bdefault\b/ block
+        // TODO: split into switch_block_body (uses `block`) and switch_expression_body (uses `func_block`)
+        switch_case: /\bcase\b/ expression_list "->" (func_block | expression ";")
+        switch_default: /\bdefault\b/ "->" (func_block | expression ";")
 
 function_decl: /\bfunc\b/ identifier params_list func_block
 class_decl: /\bclass\b/ identifier "{" class_body "}"
@@ -28,7 +29,7 @@ class_decl: /\bclass\b/ identifier "{" class_body "}"
         constructor: params_list func_block
 
 // line of code
-statement: [declaration | definition | expression | reassignment | unary_reassignment] ";"
+statement: [declaration | definition | reassignment | unary_reassignment] ";"
 declaration: var_keyword identifier ["=" definition_expression]
 definition: identifier "=" definition_expression
 reassignment: identifier reassignment_op expression
@@ -62,7 +63,7 @@ expression: null | boolean | number | string | range
     | bitwise_expression
     | logical_expression
     | comparison_expression
-    | function_expression | lambda_expression
+    | block_expression
     | parenth_expression
 
 definition_expression: expression | map
@@ -105,8 +106,11 @@ comparison_expression: expression comparison_op expression
         sym_leq: "<="
         sym_greater: ">"
         sym_geq: ">="
-function_expression: /\bfunc\b/ params_list func_block
-lambda_expression: /\bfunc\b/ params_list "=>" expression
+
+block_expression: function_expression | lambda_expression | switch_block
+    function_expression: /\bfunc\b/ params_list func_block
+    lambda_expression: /\bfunc\b/ params_list "=>" expression
+
 parenth_expression: "(" expression ")"
 
 // keywords
