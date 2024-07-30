@@ -80,23 +80,21 @@ Variables in Nouva come in two forms: mutable (*variables*) and immutable (*valu
 - **Variable declaration:** `var _identifier = _statement;`
 - **Value declaration:** `val _identifier = _statement;`
 
-Variables declared using the keyword `var` only may be reassigned after initialisation.
-
-```js
-var num = 2;
-num = 3;
-num += 6;
-num /= 2;
-```
-
 ## Reassignment
 
 Only variables declared with `var` may be reassigned.
 
+```js
+val a = 1;
+var b = 1;
+a = 2; // ERROR
+b = 3; // valid
+```
+
 Reassignments may be *binary* (having both an operator and a complement) or *unary* (having only an operator).
 
 - **Binary reassignment**:
-  - Operators: `+=`, `-=`, `*=`, `/=`, `&=`, `|=`, `#=`, `<<=`, `>>=`, `&&=`, `||=`.
+  - Operators: `=`, `+=`, `-=`, `*=`, `/=`, `&=`, `|=`, `#=`, `<<=`, `>>=`, `&&=`, `||=`.
   - Examples: `x += 2`, `y /= 10`.
 - **Unary reassignment**:
   - Operators: `=!=` (invert boolean and save back into variable).
@@ -106,7 +104,9 @@ Reassignments may be *binary* (having both an operator and a complement) or *una
 ## Functions
 
 Functions may be declared as both a block (*named*) or as an expression (*anonymous*).
-They may also be expressed more simply if the function body is only one line (as a *lambda*).
+Named functions are of the form `function _name(_parameters) {}` while anonymous functions drop the `_name` part.
+
+If the function body is only one line, then it may instead be declared as a *lambda*, which uses an arrow (`=>`) instead of the curly brace syntax.
 
 **Named function block**:
 ```js
