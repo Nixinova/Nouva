@@ -18,13 +18,13 @@ switch_block: /\bswitch\b/ expression "{" switch_body "}"
         switch_case: /\bcase\b/ expression_list block
         switch_default: /\bdefault\b/ block
 
-function_decl: /\bfunction\b/ identifier params_list func_block
+function_decl: /\bfunc\b/ identifier params_list func_block
 class_decl: /\bclass\b/ identifier "{" class_body "}"
     class_body: (instance_statement | method | constructor)*
         instance_statement: instance_declaration | instance_definition
             instance_declaration: var_keyword identifier ["=" definition_expression] ";"
             instance_definition: identifier "=" definition_expression ";"
-        method:  identifier params_list func_block
+        method: /\bfunc\b/ identifier params_list func_block
         constructor: params_list func_block
 
 // line of code
@@ -105,8 +105,8 @@ comparison_expression: expression comparison_op expression
         sym_leq: "<="
         sym_greater: ">"
         sym_geq: ">="
-function_expression: /\bfunction\b/ params_list block
-lambda_expression: "@" params_list "=>" expression
+function_expression: /\bfunc\b/ params_list func_block
+lambda_expression: /\bfunc\b/ params_list "=>" expression
 parenth_expression: "(" expression ")"
 
 // keywords

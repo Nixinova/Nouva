@@ -66,7 +66,7 @@ class ASTTransformer(Transformer):
     def constructor(self, items):
         return {"TOKEN": "constructor", "params": items[0], "body": items[1]}
     def method(self, items):
-        return {"TOKEN": "method", "identifier": items[0], "params": items[1], "body": items[2]}
+        return {"TOKEN": "method", "identifier": items[1], "params": items[2], "body": items[3]}
     
     # line of code
     def statement(self, items):
@@ -113,7 +113,7 @@ class ASTTransformer(Transformer):
     def function_expression(self, items):
         return {"TOKEN": "function_expression", "params": items[1], "body": items[2]}
     def lambda_expression(self, items):
-        return {"TOKEN": "lambda_expression", "params": items[0], "body": items[1]}
+        return {"TOKEN": "lambda_expression", "params": items[1], "body": items[2]}
     def parenth_expression(self, items):
         return items[0]
     

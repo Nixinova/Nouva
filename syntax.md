@@ -84,7 +84,7 @@ Variables in Nouva come in two forms: mutable (*variables*) and immutable (*valu
 
 Only variables declared with `var` may be reassigned.
 
-```js
+```kt
 val a = 1;
 var b = 1;
 a = 2; // ERROR
@@ -109,8 +109,8 @@ Named functions are of the form `function _name(_parameters) {}` while anonymous
 If the function body is only one line, then it may instead be declared as a *lambda*, which uses an arrow (`=>`) instead of the curly brace syntax.
 
 **Named function block**:
-```js
-function addSquares(a, b) {
+```swift
+func addSquares(a, b) {
     val square_a = a * a;
     val square_b = b * b;
     return square_a + square_b;
@@ -118,15 +118,15 @@ function addSquares(a, b) {
 ```
 
 **Anonymous function expression**:
-```js
-val anonymousFunc = function (a, b) {
+```swift
+val anonymousFunc = func (a, b) {
     return a * 2 + b * 2;
 }
 ```
 
 **Lambda expression**:
-```js
-val lambda = @(a, b) => a ^ 2 + b ^ 2;
+```swift
+val lambda = func (a, b) => a ^ 2 + b ^ 2;
 ```
 
 ## Classes
@@ -143,7 +143,7 @@ class Foo {
     #x = num;
   }
   // method:
-  getValue() {
+  func getValue() {
     return #x;
   }
 }
@@ -159,8 +159,10 @@ Type conversion is done by placing the type name followed by a colon (`:`) befor
 ```js
 var thisIsAString;
 // type is not defined yet
+// the variable is only given a type once it is given a value
 thisIsAString = "a string";
 thisIsAString = string: "definitely a string"; // if you want to be explicit
+// the variable is now a string
 // must always now be a string type
 thisIsAString = 12; // ERROR
 thisIsAString = "another string"; // works
@@ -193,7 +195,7 @@ while num < 100 {
 ```
 
 **For loop**:
-```js
+```c
 for i : 1..10 {
     print(i);
 }
@@ -204,7 +206,7 @@ for x : arr {
 ```
 
 **Switch block:**
-```js
+```c
 val value = true;
 switch (value) {
   case true, false {
