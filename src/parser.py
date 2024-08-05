@@ -1,6 +1,9 @@
-from lark import Lark, Transformer, v_args, Tree, Token
+import os
 
-GRAMMAR_FILE = "src/grammar.lark"
+from lark import Lark, Transformer, Tree, Token
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
+GRAMMAR_FILE = dir_path + "/grammar.lark"
 
 # Load grammar from file
 with open(GRAMMAR_FILE, 'r') as f:
@@ -24,6 +27,13 @@ def extract_chars(token):
 
 class ASTTransformer(Transformer):
     """Build AST nodes for the parsed language"""
+    
+    """Naming guideliness for keys:
+        - Constants: UPPERCASE
+        - Collated strings: Capitalised
+        - Subtokens: lowercase
+       Ensure sync with transpiler.py
+    """
 
     def passthrough(self, items): return items
     def firstitem(self, items): return items[0]
@@ -142,13 +152,13 @@ class ASTTransformer(Transformer):
     
     # atomics
     def identifier(self, items):
-        return {"TOKEN": "identifier", "name": extract_chars(items)}
+        return {"TOKEN": "identifier", "Name": extract_chars(items)}
 
     def number(self, items):
-        return {"TOKEN": "number", "value": items[0]}
+        return {"TOKEN": "number", "Value": items[0]}
     def based_number(self, items):
         [base, value] = items[0].split('_')
-        return {"TOKEN": "based_number", "base": base, "value": value}
+        return {"TOKEN": "based_number", "Base": base, "Value": value}
     def numeral(self, items):
         return extract_chars(items)
     digit = firstitem
@@ -234,3 +244,6 @@ def parse(code):
     tree = parser.parse(code)
     ast = ASTTransformer().transform(tree)
     return ast
+
+def get_parser():
+    return parser

@@ -1,4 +1,5 @@
 from parser import parse
+from transpiler import transpile
 import sys
 
 def debug_print_ast(node, indent=0):
@@ -14,9 +15,15 @@ def debug_print_ast(node, indent=0):
     else:
         print(' ' * indent + str(node))
 
-if __name__ == '__main__':
+def cli():
     """Parse Nouva code from the CLI"""
 
-    code = sys.argv[1]
-    ast = parse(code)
-    debug_print_ast(ast)
+    [_, func, code] = sys.argv
+    if func == 'parse':
+        ast = parse(code)
+        debug_print_ast(ast)
+    elif func == 'transpile':
+        js_code = transpile(code)
+        print(js_code)
+
+if __name__ == '__main__': cli()
