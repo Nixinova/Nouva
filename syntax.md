@@ -25,7 +25,7 @@ Nouva contains the following literals:
 - **Map**:
   - Keys may be identifiers or strings.
   - Examples: `{id: "value", id_2: "value 2"}`, `{ "string key": true }`.
-  - Access elements using `_object.id` or `_object."string key"`.
+  - Access elements using `_object._id` or `_object."string key"`.
   - Invoke functions using  `_object._method(_args)` or `_object."method name"(_args)`.
 - **Range**:
   - Creates an iterable range.
@@ -44,7 +44,7 @@ The following are valid expressions in Nouva:
 - An array getter.
   - Syntax: `array[_index]` or `array[_start::_end]`.
 - An object getter.
-  - Syntax: `_object.identifier` or `_object."string key"`.
+  - Syntax: `_object._identifier` or `_object."string key"`.
 - A typed expression.
   - Syntax: `_type: _expression`.
   - Example: `int: 2.5 + 1`.
@@ -79,7 +79,7 @@ The following are valid expressions in Nouva:
         output = false;
         print ("Fail");
       }
-    }
+    };
     ```
 - A parenthetical expression.
   - An expression surrounded with `(` `)` for grouping.

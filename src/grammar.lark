@@ -29,7 +29,7 @@ class_decl: /\bclass\b/ identifier "{" class_body "}"
         constructor: params_list func_block
 
 // line of code
-statement: [declaration | definition | reassignment | unary_reassignment] ";"
+statement: [declaration | definition | reassignment | unary_reassignment | function_invocation] ";"
 declaration: var_keyword identifier [declaration_contents]
     declaration_contents: typed_decl | valued_decl | typed_valued_decl
         typed_decl: ":" identifier
