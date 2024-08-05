@@ -26,10 +26,13 @@ def transpile_part(item):
         # line of code
         case 'declaration':
             varword = collect("varword")
-            jsvarword = 'let' if varword == 'var' else 'const'
             ident = collect("identifier")
             body = collect("body")
-            return f"{jsvarword} {ident} = {body};"
+            js_varword = ''
+            match varword:
+                case 'var': js_varword = 'let'
+                case 'val': js_varword = 'const'
+            return f"{js_varword} {ident} = {body}"
         case 'declaration_body':
             value = collect("value") or 'undefined'
             return value
@@ -37,6 +40,21 @@ def transpile_part(item):
             ident = collect("identifier")
             value = collect("value")
             return f"{ident} = {value};"
+        case 'reassignment':
+            ident = collect("identifier")
+            operator = collect("operator")
+            value = collect("value")
+            return f"{ident} {operator} {value}"
+        case 'unary_reassignment':
+            ident = collect("identifier")
+            operator = collect("operator")
+            js_operation = ''
+            match operator:
+                case '=!=': js_operation = '=!' + ident
+            return f"{ident} {js_operation}"
+        case 'return_statement':
+            value = collect("value")
+            return f"return {value};"
         
         # atomics:
         case 'identifier':
