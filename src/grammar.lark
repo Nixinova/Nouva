@@ -12,7 +12,7 @@ func_block: "{" (unit | return_statement)* "}"
 
 control_block: if_block | while_block | for_block | switch_block
 if_block: /\bif\b/ expression block [else_block]
-else_block: /\belse\b/ [if_block | block]
+else_block: /\belse\b/ [control_block | block]
 while_block: /\bwhile\b/ expression block
 for_block: /\bfor\b/ identifier ":" expression block
 switch_block: /\bswitch\b/ expression "{" switch_body "}"
