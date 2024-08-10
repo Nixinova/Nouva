@@ -1,9 +1,12 @@
 from parser import parse
 
 def transpile_part(item):
-    # basic checks
+    # quick exceptions for fundamental JS types
     if item == None:
         return 'undefined'
+    if item == True or item == False:
+        return str(item).lower()
+    # basic type checks
     if isinstance(item, str):
         return item
     if isinstance(item, list):
@@ -56,11 +59,39 @@ def transpile_part(item):
             value = collect("value")
             return f"return {value};"
         
+        # expressions
+        case 'unary_expression':
+            op = item["Operator"]
+            rhs = transpile_part(item["rhs"])
+            return f"{op} {rhs}"
+        case 'math_expression' | 'bitwise_expression' | 'logical_expression' | 'comparison_expression':
+            lhs = transpile_part(item["lhs"])
+            op = item["Operator"]
+            rhs = transpile_part(item["rhs"])
+            # Nouva->JS conversions
+            if op == '^': op = '**'
+            elif op == '><': op = '^'
+            
+            return f"{lhs} {op} {rhs}"
+        
         # atomics:
         case 'identifier':
             return item["Name"]
         case 'number':
-            return item["Value"]
+            return transpile_part(item["value"])
+        case 'based_number':
+            base = int(item["Base"])
+            num = item["Value"]
+            if base == 2: return '0b' + num
+            if base == 8: return '0o' + num
+            if base == 16: return '0x' + num
+            # for any other base:
+            try:
+                return int(num, base)
+            except:
+                # final fallback
+                # TODO support decimals of arbitrary bases
+                return f"parseInt('{num}', {base})"
         
         # default
         case _: return f'/* error {item} */'

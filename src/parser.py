@@ -130,14 +130,16 @@ class ASTTransformer(Transformer):
             
     def typed_expression(self, items):
         return {"TOKEN": "typed_expression", "type": items[0], "value": items[1]}
+    def unary_expression(self, items):
+        return {"TOKEN": "unary_expression", "Operator": items[0], "rhs": items[1]}
     def math_expression(self, items):
-        return {"TOKEN": "math_expression", "lhs": items[0], "operator": items[1], "rhs": items[2]}
+        return {"TOKEN": "math_expression", "lhs": items[0], "Operator": items[1], "rhs": items[2]}
     def bitwise_expression(self, items):
-        return {"TOKEN": "bitwise_expression", "lhs": items[0], "operator": items[1], "rhs": items[2]}
+        return {"TOKEN": "bitwise_expression", "lhs": items[0], "Operator": items[1], "rhs": items[2]}
     def logical_expression(self, items):
-        return {"TOKEN": "logical_expression", "lhs": items[0], "operator": items[1], "rhs": items[2]}
+        return {"TOKEN": "logical_expression", "lhs": items[0], "Operator": items[1], "rhs": items[2]}
     def comparison_expression(self, items):
-        return {"TOKEN": "comparison_expression", "lhs": items[0], "operator": items[1], "rhs": items[2]}
+        return {"TOKEN": "comparison_expression", "lhs": items[0], "Operator": items[1], "rhs": items[2]}
     
     block_expression = passthrough
     def function_expression(self, items):
@@ -164,7 +166,7 @@ class ASTTransformer(Transformer):
         return {"TOKEN": "identifier", "Name": extract_chars(items)}
 
     def number(self, items):
-        return {"TOKEN": "number", "Value": items[0]}
+        return {"TOKEN": "number", "value": items[0]}
     def based_number(self, items):
         [value, base] = items[0].split('_')
         return {"TOKEN": "based_number", "Base": base, "Value": value}
