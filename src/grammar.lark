@@ -17,7 +17,6 @@ while_block: /\bwhile\b/ expression block
 for_block: /\bfor\b/ identifier ":" expression block
 switch_block: /\bswitch\b/ expression "{" switch_body "}"
     switch_body: (switch_case | switch_default)*
-        // TODO: split into switch_block_body (uses `block`) and switch_expression_body (uses `func_block`)
         switch_case: /\bcase\b/ expression_list "->" (func_block | expression ";")
         switch_default: /\bdefault\b/ "->" (func_block | expression ";")
 
@@ -116,7 +115,7 @@ comparison_expression: expression comparison_op expression
         sym_greater: ">"
         sym_geq: ">="
 
-block_expression: function_expression | lambda_expression | switch_block
+block_expression: function_expression | lambda_expression
     function_expression: /\bfunc\b/ params_list func_block
     lambda_expression: /\bfunc\b/ params_list "=>" expression
 
