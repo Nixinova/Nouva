@@ -42,9 +42,13 @@ class ASTTransformer(Transformer):
     def start(self, items):
         return {"TOKEN": "Program", "body": items}
     
-    # blocks of code
+    # fundamentals
+    def imports(self, items):
+        return {"TOKEN": "imports", "body": items}
     def unit(self, items):
         return items[0]
+    
+    # blocks of code
     def block(self, items):
         return {"TOKEN": "block", "body": items}
     def control_block(self, items):
@@ -79,6 +83,11 @@ class ASTTransformer(Transformer):
         return {"TOKEN": "method", "identifier": items[1], "params": items[2], "body": items[3]}
     
     # line of code
+    def module_statement(self, items):
+        return {"TOKEN": "module_statement", "path": items[1]}
+    def import_statement(self, items):
+        return {"TOKEN": "import_statement", "path": items[1]}
+
     def statement(self, items):
         return items[0]
     

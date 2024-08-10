@@ -232,3 +232,15 @@ switch (value) {
   default -> print("invalid");
 }
 ```
+
+## Modules and imports
+
+You can declare what module (package) a file falls under using the `module` keyword.
+
+A specific file from a selected module may be imported with the `import` keyword.
+
+```c++
+module foo.barBaz;
+
+import somethingElse.FooBar;
+```

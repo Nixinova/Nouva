@@ -1,9 +1,11 @@
 // root level
-start: unit*
+start: imports* unit*
 
-// blocks of code
+// fundamentals
+imports: [module_statement] import_statement+
 unit: statement | block | control_block | function_decl | class_decl
 
+// blocks of code
 block: "{" unit* "}"
 func_block: "{" (unit | return_statement)* "}"
     return_statement: /\breturn\b/ expression ";"
@@ -29,6 +31,9 @@ class_decl: /\bclass\b/ identifier "{" class_body "}"
         constructor: params_list func_block
 
 // line of code
+module_statement: /\bmodule\b/ /\b\w+(\.\w+)*/ ";"
+import_statement: /\bimport\b/ /\b\w+(\.\w+)*/ ";"
+
 statement: [declaration | definition | reassignment | unary_reassignment | function_invocation] ";"
 declaration: var_keyword identifier [declaration_contents]
     declaration_contents: typed_decl | valued_decl | typed_valued_decl
