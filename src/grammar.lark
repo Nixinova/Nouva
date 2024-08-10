@@ -95,7 +95,7 @@ bitwise_expression: expression bitwise_op expression
     bitwise_op: sym_bitand | sym_bitor | sym_bitxor | sym_bitlshift | sym_bitrshift
         sym_bitand: "&"
         sym_bitor: "|"
-        sym_bitxor: "#"
+        sym_bitxor: "><"
         sym_bitlshift: "<<"
         sym_bitrshift: ">>"
 logical_expression: expression logical_op expression

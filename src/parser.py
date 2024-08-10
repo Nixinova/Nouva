@@ -208,7 +208,7 @@ class ASTTransformer(Transformer):
 
     def sym_bitand(self, items): return "&"
     def sym_bitor(self, items): return "|"
-    def sym_bitxor(self, items): return "#"
+    def sym_bitxor(self, items): return "><"
     def sym_bitlshift(self, items): return "<<"
     def sym_bitrshift(self, items): return ">>"
     def sym_logand(self, items): return "&&"

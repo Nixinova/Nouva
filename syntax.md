@@ -54,8 +54,8 @@ The following are valid expressions in Nouva:
   - Operators: add (`+`), subtract (`-`), multiply (`*`), divide (`/`), exponent (`^`).
   - Examples: `2 + 6`, `(5 + 2 ^ 6) / 4`.
 - A bitwise expression.
-  - Operators: and (`&`), or (`|`), xor (`#`).
-  - Examples: `0b1011 & 0b0011`, `0b10 # 0b11`.
+  - Operators: and (`&`), or (`|`), xor (`><`).
+  - Examples: `0b1011 & 0b0011`, `0b10 >< 0b11`.
 - A logical expression.
   - Operators: and (`&&`), or (`||`).
   - Examples: `6 == 1 || 2 == 2`, `foo && bar`.
