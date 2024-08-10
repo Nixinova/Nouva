@@ -50,7 +50,7 @@ def transpile_part(item):
             operator = collect("operator")
             js_operation = ''
             match operator:
-                case '=!=': js_operation = '=!' + ident
+                case '=!': js_operation = '=!' + ident
             return f"{ident} {js_operation}"
         case 'return_statement':
             value = collect("value")

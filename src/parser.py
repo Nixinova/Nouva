@@ -231,7 +231,7 @@ class ASTTransformer(Transformer):
     def sym_bitrshifteq(self, items): return ">>="
     def sym_logandeq(self, items): return "&&="
     def sym_logoreq(self, items): return "||="
-    def sym_inverteq(self, items): return "=!="
+    def sym_inverteq(self, items): return "=!"
     
     def sym_private(self, items): return "#"
     
