@@ -57,7 +57,7 @@ reassignment: identifier reassignment_op expression
         sym_logoreq: "||="
 unary_reassignment: identifier unary_reassignment_op
     unary_reassignment_op: sym_inverteq
-        sym_inverteq: "=!"
+        sym_inverteq: "=!="
 
 // expressions
 expression: null | boolean | number | string | range

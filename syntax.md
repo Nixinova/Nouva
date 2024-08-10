@@ -100,8 +100,9 @@ Reassignments may be *binary* (having both an operator and a complement) or *una
   - Operators: `=`, `+=`, `-=`, `*=`, `/=`, `&=`, `|=`, `#=`, `<<=`, `>>=`, `&&=`, `||=`.
   - Examples: `x += 2`, `y /= 10`.
 - **Unary reassignment**:
-  - Operators: `=!` (boolean inversion).
-  - Example: `var x = true; x =!; // x is now false`.
+  - Operators: `=!=` (invert boolean and save back into variable).
+  - Syntax: `_variable =!=`.
+  - Example: `var x = true; x =!=; // x is now false`.
 
 ## Functions
 
