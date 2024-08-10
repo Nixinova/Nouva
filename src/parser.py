@@ -157,7 +157,7 @@ class ASTTransformer(Transformer):
     def number(self, items):
         return {"TOKEN": "number", "Value": items[0]}
     def based_number(self, items):
-        [base, value] = items[0].split('_')
+        [value, base] = items[0].split('_')
         return {"TOKEN": "based_number", "Base": base, "Value": value}
     def numeral(self, items):
         return extract_chars(items)

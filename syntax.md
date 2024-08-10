@@ -13,8 +13,8 @@ Nouva contains the following literals:
   - `true`, `false`
 - **Number**:
   - Encompasses both integer and floating-point.
-  - Supports any base.
-  - Examples: `190`, `3.14`, `2_1.011` ('1.011' base 2), `8_17` ('17' base 8), `16_4F` ('4F' base 16), `12_1.A` ('1.A' base 12).
+  - Supports any base by affixing an underscore followed by the decimal base.
+  - Examples: `190`, `3.14`, `1.011_2` ('1.011' base 2), `17_8` ('17' base 8), `4f_16` ('4F' base 16), `1.A_12` ('1.A' base 12).
 - **String**:
   - Must be double quoted. Can go across multiple lines.
   - Example: `"contents"`.
