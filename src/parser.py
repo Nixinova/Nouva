@@ -89,7 +89,8 @@ class ASTTransformer(Transformer):
         return {"TOKEN": "import_statement", "path": items[1]}
 
     def statement(self, items):
-        return items[0]
+        return {"TOKEN": "statement", "body": items[0]}
+    statement_content = firstitem
     
     def declaration(self, items):
         return {"TOKEN": "declaration", "varword": items[0], "identifier": items[1], "body": items[2] or None}

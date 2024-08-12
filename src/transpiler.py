@@ -27,6 +27,8 @@ def transpile_part(item):
     """
     match item["TOKEN"]:
         # line of code
+        case 'statement':
+            return collect("body") + ';'
         case 'declaration':
             varword = collect("varword")
             ident = collect("identifier")
@@ -42,7 +44,7 @@ def transpile_part(item):
         case 'definition':
             ident = collect("identifier")
             value = collect("value")
-            return f"{ident} = {value};"
+            return f"{ident} = {value}"
         case 'reassignment':
             ident = collect("identifier")
             operator = collect("operator")
@@ -55,6 +57,7 @@ def transpile_part(item):
             match operator:
                 case '=!=': js_operation = '=!' + ident
             return f"{ident} {js_operation}"
+
         case 'return_statement':
             value = collect("value")
             return f"return {value};"
@@ -79,7 +82,7 @@ def transpile_part(item):
         # atomics:
         case 'identifier':
             ident = item["Name"]
-            js_ident = ident.replace('#', '_').replace('?', '$')
+            js_ident = ident.replace('#', '_').replace('?', '')
             return js_ident
         case 'number':
             return transpile_part(item["value"])
