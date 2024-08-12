@@ -41,16 +41,17 @@ declaration: var_keyword identifier [declaration_contents]
         typed_valued_decl: ":" identifier "=" definition_expression
 definition: identifier "=" definition_expression
 reassignment: identifier reassignment_op expression
-    reassignment_op: sym_pluseq | sym_mineq | sym_multeq | sym_diveq
+    reassignment_op: sym_pluseq | sym_mineq | sym_multeq | sym_diveq | sym_expeq
         | sym_bitandeq | sym_bitoreq | sym_bitxoreq | sym_bitlshifteq | sym_bitrshifteq
         | sym_logandeq | sym_logoreq
         sym_pluseq: "+="
         sym_mineq: "-="
         sym_multeq: "*="
         sym_diveq: "/="
+        sym_expeq: "^="
         sym_bitandeq: "&="
         sym_bitoreq: "|="
-        sym_bitxoreq: "#="
+        sym_bitxoreq: "><="
         sym_bitlshifteq: "<<="
         sym_bitrshifteq: ">>="
         sym_logandeq: "&&="

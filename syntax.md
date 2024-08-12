@@ -99,7 +99,7 @@ b = 3; // valid
 Reassignments may be *binary* (having both an operator and a complement) or *unary* (having only an operator).
 
 - **Binary reassignment**:
-  - Operators: `=`, `+=`, `-=`, `*=`, `/=`, `&=`, `|=`, `#=`, `<<=`, `>>=`, `&&=`, `||=`.
+  - Operators: `=`, `+=`, `-=`, `*=`, `/=`, `&=`, `|=`, `><=`, `<<=`, `>>=`, `&&=`, `||=`.
   - Examples: `x += 2`, `y /= 10`.
 - **Unary reassignment**:
   - Operators: `=!=` (invert boolean and save back into variable).

@@ -236,9 +236,10 @@ class ASTTransformer(Transformer):
     def sym_mineq(self, items): return "-="
     def sym_multeq(self, items): return "*="
     def sym_diveq(self, items): return "/="
+    def sym_expeq(self, items): return "^="
     def sym_bitandeq(self, items): return "&="
     def sym_bitoreq(self, items): return "|="
-    def sym_bitxoreq(self, items): return "#="
+    def sym_bitxoreq(self, items): return "><="
     def sym_bitlshifteq(self, items): return "<<="
     def sym_bitrshifteq(self, items): return ">>="
     def sym_logandeq(self, items): return "&&="
@@ -247,10 +248,6 @@ class ASTTransformer(Transformer):
     
     def sym_private(self, items): return "#"
     def sym_nullable(self, item): return "?"
-    
-    def bin_prefix(self, items): return "0b"
-    def oct_prefix(self, items): return "0o"
-    def hex_prefix(self, items): return "0x"
 
 def parse(code):
     """Parse a code string"""
