@@ -1,5 +1,5 @@
 from parser import parse
-from transpiler import transpile
+from transpiler import transpile, compile
 import sys
 
 def debug_print_ast(node, indent=0):
@@ -24,6 +24,9 @@ def cli():
         debug_print_ast(ast)
     elif func == 'transpile':
         js_code = transpile(code)
+        print(js_code)
+    elif func == 'compile':
+        js_code = compile(code)
         print(js_code)
 
 if __name__ == '__main__': cli()

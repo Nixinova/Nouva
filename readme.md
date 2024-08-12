@@ -12,3 +12,6 @@ Try it from the CLI: `bin/parse "var x = true;"`.
 
 Transpile Nouva code to JavaScript using **[transpiler.py](src/transpiler.py)**.
 Try it from the CLI: `bin/transpile "var x = true;"`.
+
+Basic compilation is also available, which does the above transpilation but with error reporting.
+Try it from the CLI: `bin/compile "var x = true;"`.

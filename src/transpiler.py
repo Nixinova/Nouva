@@ -1,5 +1,9 @@
 from parser import parse
 
+use_compiler = False
+declared_vars = []
+errors = []
+
 def transpile_part(item):
     # quick exceptions for fundamental JS types
     if item == None:
@@ -33,10 +37,22 @@ def transpile_part(item):
             params = item["parameters"]
             js_param_list = ','.join(params)
             body = collect("body")
+            
+            if use_compiler:
+                if ident in declared_vars:
+                    raise f"CompileError: ident {ident} already exists"
+                declared_vars.append(ident)
+            
             return f"function {ident}({js_param_list}) {'{'}\n{body}{'}'}\n" 
         case 'class_decl':
             ident = collect("identifier")
             body = collect("body")
+            
+            if use_compiler:
+                if ident in declared_vars:
+                    raise f"CompileError: ident {ident} already exists"
+                declared_vars.append(ident)
+            
             return f"class {ident} {'{'}\n{body}{'}'}\n"
         
         # line of code
@@ -50,6 +66,12 @@ def transpile_part(item):
             match varword:
                 case 'var': js_varword = 'let'
                 case 'val': js_varword = 'const'
+                
+            if use_compiler:
+                if ident in declared_vars:
+                    raise f"CompileError: ident {ident} already exists"
+                declared_vars.append(ident)
+                
             return f"{js_varword} {ident} = {body}"
         case 'declaration_body':
             value = collect("value") or 'undefined'
@@ -57,11 +79,21 @@ def transpile_part(item):
         case 'definition':
             ident = collect("identifier")
             value = collect("value")
+            
+            if use_compiler:
+                if not ident in declared_vars:
+                    raise Exception(f"CompileError: ident {ident} is not defined")
+            
             return f"{ident} = {value}"
         case 'reassignment':
             ident = collect("identifier")
             operator = collect("operator")
             value = collect("value")
+            
+            if use_compiler:
+                if not ident in declared_vars:
+                    raise Exception(f"CompileError: ident {ident} is not defined")
+            
             return f"{ident} {operator} {value}"
         case 'unary_reassignment':
             ident = collect("identifier")
@@ -69,6 +101,11 @@ def transpile_part(item):
             js_operation = ''
             match operator:
                 case '=!=': js_operation = '=!' + ident
+                
+            if use_compiler:
+                if not ident in declared_vars:
+                    raise Exception(f"CompileError: ident {ident} is not defined")
+            
             return f"{ident} {js_operation}"
 
         case 'return_statement':
@@ -128,10 +165,26 @@ def transpile_part(item):
         # default
         case _: return f'/* error {item} */'
 
-def transpile(code):
+def run_transpiler(code):
     """Transpile a Nouva code string to JavaScript"""
     parse_tree = parse(code)
+    
+    global declared_vars
+    declared_vars = []
+    
     js = ''
     for item in parse_tree["body"]:
         js += transpile_part(item)
     return js
+
+def transpile(code):
+    global use_compiler
+    use_compiler = False
+    
+    return run_transpiler(code)
+
+def compile(code):
+    global use_compiler
+    use_compiler = True
+    
+    return run_transpiler(code)
