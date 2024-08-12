@@ -71,16 +71,15 @@ class ASTTransformer(Transformer):
         return {"TOKEN": "switch_default", "body": items[1]}
     
     def function_decl(self, items):
-        return {"TOKEN": "function_decl", "identifier": items[1], "param_list": items[2], "body": items[3]}
+        return {"TOKEN": "function_decl", "identifier": items[1], "parameters": items[2], "body": items[3]}
     func_block = passthrough
     
     def class_decl(self, items):
         return {"TOKEN": "class_decl", "identifier": items[1], "body": items[2]}
     class_body = passthrough
     def constructor(self, items):
-        return {"TOKEN": "constructor", "params": items[0], "body": items[1]}
-    def method(self, items):
-        return {"TOKEN": "method", "identifier": items[1], "params": items[2], "body": items[3]}
+        return {"TOKEN": "constructor", "parameters": items[0], "body": items[1]}
+    method = function_decl
     
     # line of code
     def module_statement(self, items):
@@ -91,6 +90,7 @@ class ASTTransformer(Transformer):
     def statement(self, items):
         return {"TOKEN": "statement", "body": items[0]}
     statement_content = firstitem
+    instance_statement = statement
     
     def declaration(self, items):
         return {"TOKEN": "declaration", "varword": items[0], "identifier": items[1], "body": items[2] or None}
@@ -104,6 +104,7 @@ class ASTTransformer(Transformer):
     
     def definition(self, items):
         return {"TOKEN": "definition", "identifier": items[0], "value": items[1]}
+    instance_definition = definition
     def reassignment(self, items):
         return {"TOKEN": "reassignment", "identifier": items[0], "operator": items[1], "value": items[2]}
     def unary_reassignment(self, items):
@@ -125,9 +126,9 @@ class ASTTransformer(Transformer):
         return {"TOKEN": "array_getter", "identifier": items[0], "expression": items[1] }
     def map_getter(self, items):
         if items[2] == None:
-            return {"TOKEN": "map_getter", "identifier": items[0], "key": items[1] }
+            return {"TOKEN": "map_getter", "identifier": items[0], "Key": items[1] }
         else:
-            return {"TOKEN": "method_call", "identifier": items[0], "key": items[1], "arguments": items[2] }
+            return {"TOKEN": "method_call", "identifier": items[0], "Key": items[1], "arguments": items[2] }
             
     def typed_expression(self, items):
         return {"TOKEN": "typed_expression", "type": items[0], "value": items[1]}
@@ -144,9 +145,9 @@ class ASTTransformer(Transformer):
     
     block_expression = passthrough
     def function_expression(self, items):
-        return {"TOKEN": "function_expression", "params": items[1], "body": items[2]}
+        return {"TOKEN": "function_expression", "parameters": items[1], "body": items[2]}
     def lambda_expression(self, items):
-        return {"TOKEN": "lambda_expression", "params": items[1], "body": items[2]}
+        return {"TOKEN": "lambda_expression", "parameters": items[1], "body": items[2]}
     
     def parenth_expression(self, items):
         return items[0]

@@ -26,9 +26,22 @@ def transpile_part(item):
        Ensure sync with parser.py
     """
     match item["TOKEN"]:
+        
+        # blocks of code
+        case 'function_decl':
+            ident = collect("identifier")
+            params = item["parameters"]
+            js_param_list = ','.join(params)
+            body = collect("body")
+            return f"function {ident}({js_param_list}) {'{'}\n{body}{'}'}\n" 
+        case 'class_decl':
+            ident = collect("identifier")
+            body = collect("body")
+            return f"class {ident} {'{'}\n{body}{'}'}\n"
+        
         # line of code
         case 'statement':
-            return collect("body") + ';'
+            return collect("body") + ';\n'
         case 'declaration':
             varword = collect("varword")
             ident = collect("identifier")
@@ -60,9 +73,15 @@ def transpile_part(item):
 
         case 'return_statement':
             value = collect("value")
-            return f"return {value};"
+            return f"return {value};\n"
         
         # expressions
+        case 'method_call':
+            ident = collect("identifier")
+            key = item["Key"]
+            args = collect("arguments")
+            return f"{ident}.{key}({args})"
+        
         case 'unary_expression':
             op = item["Operator"]
             rhs = transpile_part(item["rhs"])
@@ -78,6 +97,12 @@ def transpile_part(item):
             elif op == '><=': op = '^='
             
             return f"{lhs} {op} {rhs}"
+        
+        case 'lambda_expression':
+            params = item["parameters"]
+            js_param_list = ','.join(params)
+            body = collect("body")
+            return f"({js_param_list}) => {body}"
         
         # atomics:
         case 'identifier':
