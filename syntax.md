@@ -139,16 +139,20 @@ val lambda = func (a, b) => a ^ 2 + b ^ 2;
 Classes may be created with constructors and methods.
 Members are public by default; use `#` to make an identifier private.
 
-```js
+```swift
 class Foo {
   // private instance variable:
-  var #x;
+  var #x = 0;
+  // private nullable instance variable:
+  var #y?;
   // constructor:
   (num) {
+    #y? = #x;
     #x = num;
   }
   // method:
   func getValue() {
+    #y? = null;
     return #x;
   }
 }
@@ -162,15 +166,15 @@ The type of a variable cannot be changed after it is initialised.
 Type conversion is done by placing the type name followed by a colon (`:`) before the expression.
 
 ```js
-var thisIsAString;
-// type is not defined yet
+var thisIsAString?; // `?` to make it nullable
+// type is not defined yet; value is null
 // the variable is only given a type once it is given a value
-thisIsAString = "a string";
-thisIsAString = string: "definitely a string"; // if you want to be explicit
+thisIsAString? = "a string";
+thisIsAString? = string: "definitely a string"; // if you want to be explicit
 // the variable is now a string
 // must always now be a string type
-thisIsAString = 12; // ERROR
-thisIsAString = "another string"; // works
+thisIsAString? = 12; // ERROR
+thisIsAString? = "another string"; // works
 ```
 
 ## Control flow
@@ -179,7 +183,7 @@ Nouva supports `if`, `else`, `while`, `for`, and `switch` control blocks.
 
 **If/else block**:
 ```js
-var output;
+var output = "";
 if 1 + 2 < 3 {
     output = "impossible";
 }
