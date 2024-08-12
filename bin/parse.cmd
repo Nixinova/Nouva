@@ -1,0 +1,2 @@
+
+python %0/../../src/cli.py parse %1
