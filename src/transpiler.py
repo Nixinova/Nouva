@@ -78,7 +78,9 @@ def transpile_part(item):
         
         # atomics:
         case 'identifier':
-            return item["Name"]
+            ident = item["Name"]
+            js_ident = ident.replace('#', '_').replace('?', '$')
+            return js_ident
         case 'number':
             return transpile_part(item["value"])
         case 'based_number':

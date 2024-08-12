@@ -154,17 +154,18 @@ class ASTTransformer(Transformer):
     def var_keyword(self, items):
         return extract_chars(items)
 
-    # language shortcut elements
+    # basic elements
     params_list = passthrough
     def args_list(self, items):
         return items
     def map_key(self, items):
         return items[0]
-    
+    def variable_identifier(self, items):
+        return {"TOKEN": "identifier", "Name": extract_chars(items)}
+
     # atomics
     def identifier(self, items):
-        return {"TOKEN": "identifier", "Name": extract_chars(items)}
-    variable_identifier = identifier
+        return extract_chars(items)
 
     def number(self, items):
         return {"TOKEN": "number", "value": items[0]}
