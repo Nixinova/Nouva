@@ -164,6 +164,7 @@ class ASTTransformer(Transformer):
     # atomics
     def identifier(self, items):
         return {"TOKEN": "identifier", "Name": extract_chars(items)}
+    variable_identifier = identifier
 
     def number(self, items):
         return {"TOKEN": "number", "value": items[0]}
@@ -245,6 +246,7 @@ class ASTTransformer(Transformer):
     def sym_inverteq(self, items): return "=!="
     
     def sym_private(self, items): return "#"
+    def sym_nullable(self, item): return "?"
     
     def bin_prefix(self, items): return "0b"
     def oct_prefix(self, items): return "0o"

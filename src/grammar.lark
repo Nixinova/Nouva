@@ -62,7 +62,7 @@ unary_reassignment: identifier unary_reassignment_op
 // expressions
 expression: null | boolean | number | string | range
     | array
-    | identifier
+    | variable_identifier
     | function_invocation
     | array_getter | map_getter
     | typed_expression
@@ -76,9 +76,9 @@ expression: null | boolean | number | string | range
 
 definition_expression: expression | map
 
-function_invocation: identifier "(" expression_list ")"
-array_getter: identifier "[" expression "]"
-map_getter: identifier "." map_key ["(" expression_list ")"]
+function_invocation: variable_identifier "(" expression_list ")"
+array_getter: variable_identifier "[" expression "]"
+map_getter: variable_identifier "." map_key ["(" expression_list ")"]
 
 typed_expression: identifier ":" expression
 unary_expression: unary_op expression
@@ -125,8 +125,10 @@ parenth_expression: "(" expression ")"
 var_keyword: /\bvar\b/ | /\bval\b/
 
 // atomics
-identifier: [sym_private] word_char id_char*
+identifier: word_char id_char*
+variable_identifier: [sym_private] identifier [sym_nullable]
     sym_private: "#"
+    sym_nullable: "?"
 
 null: /\bnull\b/
 boolean: /\btrue\b/ | /\bfalse\b/

@@ -82,6 +82,8 @@ Variables in Nouva come in two forms: mutable (*variables*) and immutable (*valu
 - **Value declaration:** `val _identifier : _type = _expression;`
   - Specifying the type is optional.
 
+Variables are non-nullable by default. To mark a variable as nullable, add the `?` character to the end of the identifier.
+
 ## Reassignment
 
 Only variables declared with `var` may be reassigned.
