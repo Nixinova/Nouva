@@ -39,6 +39,8 @@ def transpile_part(item):
     match item["TOKEN"]:
         
         # blocks of code
+        case 'block':
+            return '{\n' + collect("body") + '}'
         case 'function_decl':
             ident = collect("identifier")
             params = []
@@ -52,7 +54,39 @@ def transpile_part(item):
                     raise f"CompileError: ident {ident} already exists"
                 declared_vars.append(ident)
             
-            return f"function {ident}({param_list}) {'{'}\n{body}{'}'}\n" 
+            return f"function {ident}({param_list}) {'{'}\n{body}{'}'}\n"
+        case 'if_block':
+            expr = collect("test")
+            iftrue = collect("iftrue")
+            iffalse = item["iffalse"] and collect("iffalse")
+            if iffalse:
+                return f"if ({expr}) {iftrue} else {iffalse}"
+            else:
+                return f"if ({expr}) {iftrue}"
+        case 'else_block':
+            return collect("body")
+        case 'while_block':
+            expr = collect("test")
+            body = collect("body")
+            return f"while ({expr}) {body}"
+        case 'for_block':
+            ident = collect("identifier")
+            minv = transpile_part(item["range"]["start"])
+            maxv = transpile_part(item["range"]["end"])
+            body = collect("body")
+            return f"for (let {ident} = {minv}; {ident} <= {maxv}; {ident}++) {body}"
+        case 'switch_block':
+            expr = collect("expression")
+            body = collect("body")
+            return f"switch ({expr}) {'{'}\n{body}\n{'}'}"
+        case 'switch_case':
+            cases_label = ''
+            for case_val in item["cases"]:
+                cases_label += 'case ' + transpile_part(case_val) + ': '
+            body = collect("body")
+            return f"{cases_label} {'{'}\n{body} break;\n{'}'}"
+        case 'switch_default':
+            return f"default: {'{'}\n{collect("body")} break;\n{'}'}"
         case 'class_decl':
             ident = collect("identifier")
             params = []

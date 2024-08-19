@@ -51,12 +51,11 @@ class ASTTransformer(Transformer):
     # blocks of code
     def block(self, items):
         return {"TOKEN": "block", "body": items}
-    def control_block(self, items):
-        return {"TOKEN": "control_block", "body": items[0]}
+    control_block = passthrough
     def if_block(self, items):
         return {"TOKEN": "if_block", "test": items[1], "iftrue": items[2], "iffalse": items[3] or None}
     def else_block(self, items):
-        return {"TOKEN": "else_block", "body": items}
+        return {"TOKEN": "else_block", "body": items[1]}
     def while_block(self, items):
         return {"TOKEN": "while_block", "test": items[1], "body": items[2]}
     def for_block(self, items):
