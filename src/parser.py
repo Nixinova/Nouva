@@ -105,8 +105,8 @@ class ASTTransformer(Transformer):
     def unary_reassignment(self, items):
         return {"TOKEN": "unary_reassignment", "identifier": items[0], "operator": items[1]}
     
-    def panic_statement(self, items):
-        return {"TOKEN": "panic_statement", "body": items[1]}
+    def throw_statement(self, items):
+        return {"TOKEN": "throw_statement", "body": items[1]}
     
     def return_statement(self, items):
         return {"TOKEN": "return_statement", "value": items[1]}
@@ -122,6 +122,8 @@ class ASTTransformer(Transformer):
     def function_invocation(self, items):
         return {"TOKEN": "function_invocation", "function": items[0], "args": items[1], "handler": items[2] or None}
     handler = firstitem
+    def catcher(self, items):
+        return {"TOKEN": "catcher", "identifier": items[1], "body": items[2]}
     def array_getter(self, items):
         return {"TOKEN": "array_getter", "identifier": items[0], "expression": items[1] }
     def map_getter(self, items):

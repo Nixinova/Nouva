@@ -29,7 +29,7 @@ import_statement: /\bimport\b/ /\b\w+(\.\w+)*/ ";"
 
 statement: [statement_content] ";"
     statement_content: declaration | definition | reassignment | unary_reassignment
-        | panic_statement
+        | throw_statement
         | function_invocation | map_getter
 
 declaration: var_keyword variable_identifier [declaration_contents]
@@ -58,7 +58,7 @@ unary_reassignment: variable_identifier unary_reassignment_op
     unary_reassignment_op: sym_inverteq
         sym_inverteq: "=!="
 
-panic_statement: /\bpanic\b/ expression
+throw_statement: /\bthrow\b/ expression
 
 // expressions
 expression: null | boolean | number | string | range | lit_type
@@ -78,7 +78,8 @@ expression: null | boolean | number | string | range | lit_type
 definition_expression: expression | map
 
 function_invocation: variable_identifier "(" expression_list ")" [handler]
-    handler: "!" (variable_identifier | func_expression | map_getter)
+    handler: "!" (catcher | variable_identifier | func_expression | map_getter)
+        catcher: /\bcatch\b/ "(" function_param ")" func_block
 array_getter: variable_identifier "[" expression "]"
 map_getter: variable_identifier "." map_key ["(" expression_list ")"]
 
@@ -149,7 +150,7 @@ lit_type: "<" type_list ">"
 // language shortcut elements
 expression_list: (expression [","])*
 params_list: "(" (function_param [","])* ")"
-    function_param: identifier ":" type_list
+function_param: identifier ":" type_list
 map_key: identifier | string
 type_list: type_value ("|" type_value)*
 

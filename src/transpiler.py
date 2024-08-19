@@ -134,7 +134,7 @@ def transpile_part(item):
             
             return f"{ident} {js_operation}"
         
-        case 'panic_statement':
+        case 'throw_statement':
             body = collect("body")
             return f"throw {body}"
 
@@ -148,9 +148,13 @@ def transpile_part(item):
             args = collect("args")
             handler = item["handler"] and collect("handler")
             if handler:
-                return f"(function() {'{'} try {'{'} return {name}({args}); {'}'} catch(_e$) {'{'} ({handler})(_e$); {'}'} {'}'})()"
+                return f"(function() {'{'}\ntry {'{'}\nreturn {name}({args});\n{'}'} catch(_e$) {'{'}\n({handler})(_e$);\n{'}'}\n{'}'})()"
             else:
                 return f"{name}({args})"
+        case 'catcher':
+            ident = collect("identifier")
+            body = collect("body")
+            return f"(function({ident}) {'{'}\n{body}\n{'}'})"
         case 'method_call':
             ident = collect("identifier")
             key = item["Key"]

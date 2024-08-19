@@ -299,30 +299,32 @@ import somethingElse.FooBar;
 
 ## Error handling
 
-Nouva has unqiue syntax for errors, using `panic` to throw an error and a function to handle it that is placed after the function invocation.
+Nouva has unqiue syntax for errors, using `panic` to throw an error and a handler.
+The handler may either be function expression or a catch block. Either way, the body of the error handler takes one parameter (the error).
 
 You can tell that a function invocation may throw an error as the function arguments end up surrounded with `!`.
 
 ```js
-class NewError(msg: string) {
+class Error(msg: string) {
   val message = msg;
 }
 
 // `!` symbol is a necessary part of the identifier for if the function throws an error
 func numFunc!(input: number) {
   if input < 10 {
-    panic NewError("Too low!");
+    throw Error("Too low!");
   }
   else {
-    print(input)
+    print(input);
   }
 }
 
-func errorHandler(error: NewError) {
-  print(error.message);
+func handleError(err: Error) {
+  print(err.message);
 }
 
-numFunc!(12)!errorHandler; // error handler not called; prints 12
-numFunc!(5)!errorHandler; // error handler called; prints "Too low"
-numFunc!(5)!func(e)=>print(e); // same as above
+numFunc!(12)!handleError; // error handler not called; prints 12
+numFunc!(5)!handleError; // error handler called; prints "Too low"
+numFunc!(5)!catch(err: Error) { handleError(err); }; // equivalent to the above
+numFunc!(5)!catch(err: Error) { throw err; }; // error thrown upwards
 ```
