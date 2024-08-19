@@ -71,8 +71,8 @@ def transpile_part(item):
             [value, type_val] = intermediary_unpack(collect("body")) # NOTE: collects from packed intermediary result
             varword = ''
             match var_keyword:
-                case 'var': varword = '/*ES/let/*//*JAVA/var/*/'
-                case 'val': varword = '/*ES/const/*//*JAVA/final var/*/'
+                case 'var': varword = '/*ES/let/*/'
+                case 'val': varword = '/*ES/const/*/'
                 
             if use_compiler:
                 if ident in declared_vars:
@@ -119,12 +119,24 @@ def transpile_part(item):
                     raise Exception(f"CompileError: ident {ident} is not defined")
             
             return f"{ident} {js_operation}"
+        
+        case 'panic_statement':
+            body = collect("body")
+            return f"throw {body}"
 
         case 'return_statement':
             value = collect("value")
             return f"return {value};\n"
         
         # expressions
+        case 'function_invocation':
+            name = collect("function").replace('!', '').replace('?', '').replace('#', '')
+            args = collect("args")
+            handler = item["handler"] and collect("handler")
+            if handler:
+                return f"(function() {'{'} try {'{'} return {name}({args}); {'}'} catch(_e$) {'{'} ({handler})(_e$); {'}'} {'}'})()"
+            else:
+                return f"{name}({args})"
         case 'method_call':
             ident = collect("identifier")
             key = item["Key"]
@@ -208,9 +220,6 @@ def compile(code, lang):
         case 'ts':
             # output TS-only or ES features
             result = re.sub(r"\/\*(?:TS|ES)\/(.+?)\/\*\/", r'\1', result)
-        case 'java':
-            # output Java-only features
-            result = re.sub(r"\/\*(?:JAVA)\/(.+?)\/\*\/", r'\1', result)
     result = re.sub(r"\/\*.+?\/\*\/", '', result)
     
     return result

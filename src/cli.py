@@ -30,6 +30,6 @@ def cli():
             js_code = compile(code, args[0])
             print(js_code)
         else:
-            print("ERROR: Please input a valid language at the end of your query string! Options: JS, TS, Java.")
+            print("ERROR: Please input a valid language at the end of your query string! Options: JS, TS.")
 
 if __name__ == '__main__': cli()

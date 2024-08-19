@@ -109,6 +109,10 @@ class ASTTransformer(Transformer):
         return {"TOKEN": "reassignment", "identifier": items[0], "operator": items[1], "value": items[2]}
     def unary_reassignment(self, items):
         return {"TOKEN": "unary_reassignment", "identifier": items[0], "operator": items[1]}
+    
+    def panic_statement(self, items):
+        return {"TOKEN": "panic_statement", "body": items[1]}
+    
     def return_statement(self, items):
         return {"TOKEN": "return_statement", "value": items[1]}
     
@@ -121,7 +125,8 @@ class ASTTransformer(Transformer):
     definition_expression = firstitem
     
     def function_invocation(self, items):
-        return {"TOKEN": "function_invocation", "function": items[0], "args": items[1]}
+        return {"TOKEN": "function_invocation", "function": items[0], "args": items[1], "handler": items[2] or None}
+    handler = firstitem
     def array_getter(self, items):
         return {"TOKEN": "array_getter", "identifier": items[0], "expression": items[1] }
     def map_getter(self, items):
@@ -143,7 +148,7 @@ class ASTTransformer(Transformer):
     def comparison_expression(self, items):
         return {"TOKEN": "comparison_expression", "lhs": items[0], "Operator": items[1], "rhs": items[2]}
     
-    block_expression = passthrough
+    func_expression = passthrough
     def function_expression(self, items):
         return {"TOKEN": "function_expression", "parameters": items[1], "body": items[2]}
     def lambda_expression(self, items):
@@ -258,6 +263,7 @@ class ASTTransformer(Transformer):
     
     def sym_private(self, items): return "#"
     def sym_nullable(self, item): return "?"
+    def sym_errorable(self, item): return "!"
 
 def parse(code):
     """Parse a code string"""

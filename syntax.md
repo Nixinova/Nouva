@@ -36,6 +36,19 @@ Nouva contains the following literals:
   - Syntax: `<_type>`.
   - Examples: `<string>`, `<string | null | 0>`.
 
+## Identifiers
+
+Identifiers must start with a letter or underscore but can otherwise contain any alphanumeric or underscore characters.
+
+Various symbols may be used to attach metadata to an identifier.
+These symbols are integral parts of the identifier itself and must always be used, not just at declaration.
+
+- Instance variable identifiers inside a class may be made private using a `#` prefix.
+- Variable or function identifiers must end with a `?` if it is allowed to be null.
+- Function identifiers must end with a `!` if the function body contains any [`panic` statements](#error-handling).
+
+The order of the symbols at the start or end does not matter (i.e., `funcName!?` and `funcName?!` are interchangeable).
+
 ## Expressions
 
 The following are valid expressions in Nouva:
@@ -44,7 +57,7 @@ The following are valid expressions in Nouva:
   - Examples: `true`, `0x4`.
 - An identifier (name of a [variable or value](#Variables)).
 - A function invocation.
-  - Syntax: `_functionName(_argument1)`.
+  - Syntax: `_functionName()` or `_functionName(_arg1, _arg2, _etc)` or `_functionName(_args)!_errorHandlingFunction`.
 - An array getter.
   - Syntax: `array[_index]` or `array[_start::_end]`.
 - An object getter.
@@ -205,7 +218,7 @@ thisIsAString? = "another string"; // works
 Since types are passable as literals, generics may be made without any compiler overhead:
 
 ```swift
-func genericAdd?(T, a, b) {
+func genericAdd?!(T, a, b) {
   if T == <string> {
     return a + "\n" + b;
   }
@@ -213,7 +226,7 @@ func genericAdd?(T, a, b) {
     return a + b;
   }
   else {
-    return null;
+    panic Error("Invalid type");
   }
 }
 ```
@@ -278,3 +291,29 @@ module foo.barBaz;
 import somethingElse.FooBar;
 ```
 
+
+## Error handling
+
+Nouva has unqiue syntax for errors, using `panic` to throw an error and a function to handle it that is placed after the function invocation.
+
+You can tell that a function invocation may throw an error as the function arguments end up surrounded with `!`.
+
+```js
+// `!` symbol is a necessary part of the identifier for if the function throws an error
+func numFunc!(input) {
+  if input < 10 {
+    panic Error("Too low!");
+  }
+  else {
+    print(input)
+  }
+}
+
+func errorHandler(error) {
+  print(error);
+}
+
+numFunc!(12)!errorHandler; // error handler not called; prints 12
+numFunc!(5)!errorHandler; // error handler called; prints "Too low"
+numFunc!(5)!func(e)=>print(e); // same as above
+```
