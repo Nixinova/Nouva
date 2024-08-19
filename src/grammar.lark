@@ -154,7 +154,8 @@ lit_type: "<" type_list ">"
 
 // language shortcut elements
 expression_list: (expression [","])*
-params_list: "(" (identifier [","])* ")"
+params_list: "(" (function_param [","])* ")"
+    function_param: identifier ":" type_list
 map_key: identifier | string
 type_list: type_value ("|" type_value)*
 

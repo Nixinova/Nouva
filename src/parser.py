@@ -163,6 +163,8 @@ class ASTTransformer(Transformer):
 
     # basic elements
     params_list = passthrough
+    def function_param(self, items):
+        return {"TOKEN": "function_param", "Identifier": items[0], "Type": items[1]}
     def args_list(self, items):
         return items
     def map_key(self, items):

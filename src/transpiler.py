@@ -41,8 +41,10 @@ def transpile_part(item):
         # blocks of code
         case 'function_decl':
             ident = collect("identifier")
-            params = item["parameters"]
-            js_param_list = ','.join(params)
+            params = []
+            for param_item in item["parameters"]:
+                params.append(transpile_part(param_item))
+            param_list = ','.join(params)
             body = collect("body")
             
             if use_compiler:
@@ -50,7 +52,7 @@ def transpile_part(item):
                     raise f"CompileError: ident {ident} already exists"
                 declared_vars.append(ident)
             
-            return f"function {ident}({js_param_list}) {'{'}\n{body}{'}'}\n" 
+            return f"function {ident}({param_list}) {'{'}\n{body}{'}'}\n" 
         case 'class_decl':
             ident = collect("identifier")
             body = collect("body")
@@ -160,10 +162,18 @@ def transpile_part(item):
             return f"{lhs} {op} {rhs}"
         
         case 'lambda_expression':
-            params = item["parameters"]
-            js_param_list = ','.join(params)
+            params = []
+            for param_item in item["parameters"]:
+                params.append(transpile_part(param_item))
+            param_list = ','.join(params)
             body = collect("body")
-            return f"({js_param_list}) => {body}"
+            return f"({param_list}) => {body}"
+        
+        # basic elements:
+        case 'function_param':
+            ident = item["Identifier"]
+            type_union = '|'.join(item["Type"])
+            return f"{ident} /*TS/: {type_union}/*/"
         
         # atomics:
         case 'identifier':

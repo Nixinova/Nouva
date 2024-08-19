@@ -57,7 +57,9 @@ The following are valid expressions in Nouva:
   - Examples: `true`, `0x4`.
 - An identifier (name of a [variable or value](#Variables)).
 - A function invocation.
-  - Syntax: `_functionName()` or `_functionName(_arg1, _arg2, _etc)` or `_functionName(_args)!_errorHandlingFunction`.
+  - Syntax: `_functionIdentifier(_args)` `_functionIdentifier(_args)!_errorHandlingFunction`.
+  - Allows any number of comma-separated arguments.
+  - Must take an error handling function if the function contains a [`panic` statement](#error-handling).
 - An array getter.
   - Syntax: `array[_index]` or `array[_start::_end]`.
 - An object getter.
@@ -127,12 +129,13 @@ Reassignments may be *binary* (having both an operator and a complement) or *una
 
 Functions may be declared as both a block (*named*) or as an expression (*anonymous*).
 Named functions are of the form `function _name(_parameters) {}` while anonymous functions drop the `_name` part.
+Each parameter must have an associated [type](#types); the return type of the function is assumed.
 
 If the function body is only one line, then it may instead be declared as a *lambda*, which uses an arrow (`=>`) instead of the curly brace syntax.
 
 **Named function block**:
 ```swift
-func addSquares(a, b) {
+func addSquares(a: number, b: number) {
     val square_a = a * a;
     val square_b = b * b;
     return square_a + square_b;
@@ -141,14 +144,14 @@ func addSquares(a, b) {
 
 **Anonymous function expression**:
 ```swift
-val anonymousFunc = func (a, b) {
+val anonymousFunc = func (a: number, b: number) {
     return a * 2 + b * 2;
 }
 ```
 
 **Lambda expression**:
 ```swift
-val lambda = func (a, b) => a ^ 2 + b ^ 2;
+val lambda = func (a: number, b: number) => a ^ 2 + b ^ 2;
 ```
 
 ## Classes
@@ -299,18 +302,25 @@ Nouva has unqiue syntax for errors, using `panic` to throw an error and a functi
 You can tell that a function invocation may throw an error as the function arguments end up surrounded with `!`.
 
 ```js
+class NewError {
+  message?: string;
+  (msg: string) {
+    message? = message?;
+  }
+}
+
 // `!` symbol is a necessary part of the identifier for if the function throws an error
-func numFunc!(input) {
+func numFunc!(input: number) {
   if input < 10 {
-    panic Error("Too low!");
+    panic NewError("Too low!");
   }
   else {
     print(input)
   }
 }
 
-func errorHandler(error) {
-  print(error);
+func errorHandler(error: NewError) {
+  print(error.message);
 }
 
 numFunc!(12)!errorHandler; // error handler not called; prints 12
