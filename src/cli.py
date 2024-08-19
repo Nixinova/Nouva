@@ -18,7 +18,7 @@ def debug_print_ast(node, indent=0):
 def cli():
     """Parse Nouva code from the CLI"""
 
-    [_, func, code] = sys.argv
+    [_, func, code, *args] = sys.argv
     if func == 'parse':
         ast = parse(code)
         debug_print_ast(ast)
@@ -26,7 +26,10 @@ def cli():
         js_code = transpile(code)
         print(js_code)
     elif func == 'compile':
-        js_code = compile(code)
-        print(js_code)
+        if len(args) > 0:
+            js_code = compile(code, args[0])
+            print(js_code)
+        else:
+            print("ERROR: Please input a valid language at the end of your query string! Options: JS, TS, Java.")
 
 if __name__ == '__main__': cli()

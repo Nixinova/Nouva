@@ -1,3 +1,4 @@
+import re
 from parser import parse
 
 use_compiler = False
@@ -65,20 +66,20 @@ def transpile_part(item):
         case 'statement':
             return collect("body") + ';\n'
         case 'declaration':
-            varword = collect("varword")
+            var_keyword = collect("varword")
             ident = collect("identifier")
             [value, type_val] = intermediary_unpack(collect("body")) # NOTE: collects from packed intermediary result
-            js_varword = ''
-            match varword:
-                case 'var': js_varword = 'let'
-                case 'val': js_varword = 'const'
+            varword = ''
+            match var_keyword:
+                case 'var': varword = '/*ES/let/*//*JAVA/var/*/'
+                case 'val': varword = '/*ES/const/*//*JAVA/final var/*/'
                 
             if use_compiler:
                 if ident in declared_vars:
                     raise f"CompileError: ident {ident} already exists"
                 declared_vars.append(ident)
                 
-            return f"{js_varword} {ident} /*/: {type_val}/*/ = {value}"
+            return f"{varword} {ident} /*TS/: {type_val}/*/ = {value}"
         # NOTE: returns packed intermediary result (must be unpacked)
         case 'declaration_body':
             value = collect("value")
@@ -194,8 +195,22 @@ def transpile(code):
     
     return run_transpiler(code)
 
-def compile(code):
+def compile(code, lang):
     global use_compiler
     use_compiler = True
     
-    return run_transpiler(code)
+    result = run_transpiler(code)
+    
+    match lang.lower():
+        case 'js':
+            # output JS-only or ES features
+            result = re.sub(r"\/\*(?:JS|ES)\/(.+?)\/\*\/", r'\1', result)
+        case 'ts':
+            # output TS-only or ES features
+            result = re.sub(r"\/\*(?:TS|ES)\/(.+?)\/\*\/", r'\1', result)
+        case 'java':
+            # output Java-only features
+            result = re.sub(r"\/\*(?:JAVA)\/(.+?)\/\*\/", r'\1', result)
+    result = re.sub(r"\/\*.+?\/\*\/", '', result)
+    
+    return result
