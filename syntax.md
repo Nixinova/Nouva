@@ -160,20 +160,22 @@ Classes may be created with constructors and methods.
 Members are public by default; use `#` to make an identifier private.
 
 ```swift
-class Foo {
+class Foo(num) {
+  // constructor is automatically created from the above parameter list
+  // instance variables may access these parameters directly
+
   // private instance variable:
-  var #x = 0;
+  var #x = num;
   // private nullable instance variable:
   var #y?;
-  // constructor:
-  (num) {
-    #y? = #x;
-    #x = num;
-  }
   // method:
   func getValue() {
-    #y? = null;
-    return #x;
+    if #y? != null {
+      return #y;
+    } else {
+      #y? = null;
+      return #x;
+    }
   }
 }
 ```
@@ -302,11 +304,8 @@ Nouva has unqiue syntax for errors, using `panic` to throw an error and a functi
 You can tell that a function invocation may throw an error as the function arguments end up surrounded with `!`.
 
 ```js
-class NewError {
-  message?: string;
-  (msg: string) {
-    message? = message?;
-  }
+class NewError(msg: string) {
+  val message = msg;
 }
 
 // `!` symbol is a necessary part of the identifier for if the function throws an error

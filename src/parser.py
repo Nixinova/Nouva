@@ -75,10 +75,7 @@ class ASTTransformer(Transformer):
     func_block = passthrough
     
     def class_decl(self, items):
-        return {"TOKEN": "class_decl", "identifier": items[1], "body": items[2]}
-    class_body = passthrough
-    def constructor(self, items):
-        return {"TOKEN": "constructor", "parameters": items[0], "body": items[1]}
+        return {"TOKEN": "class_decl", "identifier": items[1], "parameters": items[2], "body": items[3]}
     method = function_decl
     
     # line of code
@@ -90,7 +87,6 @@ class ASTTransformer(Transformer):
     def statement(self, items):
         return {"TOKEN": "statement", "body": items[0]}
     statement_content = firstitem
-    instance_statement = statement
     
     def declaration(self, items):
         return {"TOKEN": "declaration", "varword": items[0], "identifier": items[1], "body": items[2] or None}
@@ -104,7 +100,6 @@ class ASTTransformer(Transformer):
     
     def definition(self, items):
         return {"TOKEN": "definition", "identifier": items[0], "value": items[1]}
-    instance_definition = definition
     def reassignment(self, items):
         return {"TOKEN": "reassignment", "identifier": items[0], "operator": items[1], "value": items[2]}
     def unary_reassignment(self, items):

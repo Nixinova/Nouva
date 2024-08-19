@@ -20,14 +20,8 @@ switch_block: /\bswitch\b/ expression "{" switch_body "}"
         switch_case: /\bcase\b/ expression_list "->" (func_block | expression ";")
         switch_default: /\bdefault\b/ "->" (func_block | expression ";")
 
-function_decl: /\bfunc\b/ identifier params_list func_block
-class_decl: /\bclass\b/ identifier "{" class_body "}"
-    class_body: (instance_statement | method | constructor)*
-        instance_statement: instance_declaration | instance_definition
-            instance_declaration: var_keyword identifier ["=" definition_expression] ";"
-            instance_definition: identifier "=" definition_expression ";"
-        method: /\bfunc\b/ identifier params_list func_block
-        constructor: params_list func_block
+function_decl: /\bfunc\b/ variable_identifier params_list func_block
+class_decl: /\bclass\b/ identifier params_list "{" unit* "}"
 
 // line of code
 module_statement: /\bmodule\b/ /\b\w+(\.\w+)*/ ";"

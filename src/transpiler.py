@@ -55,14 +55,25 @@ def transpile_part(item):
             return f"function {ident}({param_list}) {'{'}\n{body}{'}'}\n" 
         case 'class_decl':
             ident = collect("identifier")
+            params = []
+            param_idents = []
+            for param_item in item["parameters"]:
+                params.append(transpile_part(param_item))
+                param_idents.append(param_item["Identifier"])
             body = collect("body")
+            
+            # create constructor
+            constructor_body = ''
+            for param in param_idents:
+                constructor_body += f"this.{param} = {param};\n"
+            full_body = f"constructor({','.join(params)}) {'{'} {constructor_body} {'}'}\n" + body
             
             if use_compiler:
                 if ident in declared_vars:
                     raise f"CompileError: ident {ident} already exists"
                 declared_vars.append(ident)
             
-            return f"class {ident} {'{'}\n{body}{'}'}\n"
+            return f"class {ident} {'{'}\n{full_body}{'}'}\n"
         
         # line of code
         case 'statement':
@@ -81,12 +92,13 @@ def transpile_part(item):
                     raise f"CompileError: ident {ident} already exists"
                 declared_vars.append(ident)
                 
-            return f"{varword} {ident} /*TS/: {type_val}/*/ = {value}"
+            return f"{varword} {ident} {type_val and f"/*TS/: {type_val}/*/" or ''} = {value}"
         # NOTE: returns packed intermediary result (must be unpacked)
         case 'declaration_body':
             value = collect("value")
+            types = item["type"]
             type_idents = []
-            for type_item in item["type"]:
+            for type_item in types or []:
                 type_idents.append(transpile_part(type_item))
             type_val = '|'.join(type_idents)
             return intermediary_pack([value, type_val])
