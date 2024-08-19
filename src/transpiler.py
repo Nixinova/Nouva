@@ -4,6 +4,12 @@ use_compiler = False
 declared_vars = []
 errors = []
 
+_UNIQDELIM = "ab467d4984e596ba" # arbitrary ID used to delimit intermediate transpilations that require reparsing in a parent token
+def intermediary_pack(values):
+    return _UNIQDELIM.join(values)
+def intermediary_unpack(str):
+    return str.split(_UNIQDELIM)
+
 def transpile_part(item):
     # quick exceptions for fundamental JS types
     if item == None:
@@ -61,7 +67,7 @@ def transpile_part(item):
         case 'declaration':
             varword = collect("varword")
             ident = collect("identifier")
-            body = collect("body")
+            [value, type_val] = intermediary_unpack(collect("body")) # NOTE: collects from packed intermediary result
             js_varword = ''
             match varword:
                 case 'var': js_varword = 'let'
@@ -72,10 +78,15 @@ def transpile_part(item):
                     raise f"CompileError: ident {ident} already exists"
                 declared_vars.append(ident)
                 
-            return f"{js_varword} {ident} = {body}"
+            return f"{js_varword} {ident} /*/: {type_val}/*/ = {value}"
+        # NOTE: returns packed intermediary result (must be unpacked)
         case 'declaration_body':
-            value = collect("value") or 'undefined'
-            return value
+            value = collect("value")
+            type_idents = []
+            for type_item in item["type"]:
+                type_idents.append(transpile_part(type_item))
+            type_val = '|'.join(type_idents)
+            return intermediary_pack([value, type_val])
         case 'definition':
             ident = collect("identifier")
             value = collect("value")

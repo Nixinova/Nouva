@@ -161,7 +161,28 @@ class Foo {
 ## Types
 
 Variables are assigned whatever type they are given on initialisation.
+Multiple types may be specified, separated by pipes (`|`).
 The type of a variable cannot be changed after it is initialised.
+
+```ts
+var str = "string!";
+// str must be 'string' only
+var numOrStr: string | number = "12";
+// numOrStr may be string or a number
+numOrStr = number: parseInt(numOrStr); // allowed
+```
+
+A type may be either a fundamental type (`string`, etc); a class name; or a string template tag.
+A string template tag takes the format `` `contents` ``, where the contents may use braces to subtitute an expression.
+
+```java
+val num = 10;
+var templateType?: `hasNumber({num})`;
+// templateType is optional (may be null) but when specified must be a string of the form `hasNumber(10)`
+templateType? = "hasNumber(10)"; // allowed
+templateType? = null; // allowed also
+templateType? = "hasNumber(12)"; // not allowed: {num} is a constant term, being 10
+```
 
 Type conversion is done by placing the type name followed by a colon (`:`) before the expression.
 

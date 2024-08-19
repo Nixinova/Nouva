@@ -164,6 +164,8 @@ class ASTTransformer(Transformer):
         return items[0]
     def variable_identifier(self, items):
         return {"TOKEN": "identifier", "Name": extract_chars(items)}
+    def type_list(self, items):
+        return items
 
     # atomics
     def identifier(self, items):
@@ -199,6 +201,9 @@ class ASTTransformer(Transformer):
     
     def range(self, items):
         return {"TOKEN": "range", "start": items[0], "end": items[1]}
+    
+    def type_value(self, items):
+        return extract_chars(items[0])
     
     # operators
     reassignment_op = firstitem

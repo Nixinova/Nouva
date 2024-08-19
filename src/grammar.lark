@@ -39,9 +39,9 @@ statement: [statement_content] ";"
 
 declaration: var_keyword variable_identifier [declaration_contents]
     declaration_contents: typed_decl | valued_decl | typed_valued_decl
-        typed_decl: ":" identifier
+        typed_decl: ":" type_list
         valued_decl: "=" definition_expression
-        typed_valued_decl: ":" identifier "=" definition_expression
+        typed_valued_decl: ":" type_list "=" definition_expression
 definition: variable_identifier "=" definition_expression
 reassignment: variable_identifier reassignment_op expression
     reassignment_op: sym_pluseq | sym_mineq | sym_multeq | sym_diveq | sym_expeq
@@ -144,16 +144,20 @@ array: "[" ([number ":"] expression [","])* "]"
 map: "{" (map_key ":" expression [","])* "}"
 range: expression ".." [expression] | [expression] ".." expression
 
+type_value: identifier | "`" template_char* "`"
+
 // language shortcut elements
 expression_list: (expression [","])*
 params_list: "(" (identifier [","])* ")"
 map_key: identifier | string
+type_list: type_value ("|" type_value)*
 
 // fundamentals
 any: /./
 digit: /[0-9]/
 word_char: /[a-zA-Z_]/
 string_char: /[^"]/ | "\\" any
+template_char: /[^`]/ | "\\" any
 id_char: word_char | digit
 
 // comments
