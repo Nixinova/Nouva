@@ -64,7 +64,7 @@ unary_reassignment: variable_identifier unary_reassignment_op
         sym_inverteq: "=!="
 
 // expressions
-expression: null | boolean | number | string | range
+expression: null | boolean | number | string | range | lit_type
     | array
     | variable_identifier
     | function_invocation
@@ -145,6 +145,7 @@ map: "{" (map_key ":" expression [","])* "}"
 range: expression ".." [expression] | [expression] ".." expression
 
 type_value: identifier | "`" template_char* "`"
+lit_type: "<" type_list ">"
 
 // language shortcut elements
 expression_list: (expression [","])*

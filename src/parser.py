@@ -118,7 +118,7 @@ class ASTTransformer(Transformer):
     def expression(self, items):
         return items[0]
     
-    definition_expression = passthrough
+    definition_expression = firstitem
     
     def function_invocation(self, items):
         return {"TOKEN": "function_invocation", "function": items[0], "args": items[1]}
@@ -204,6 +204,8 @@ class ASTTransformer(Transformer):
     
     def type_value(self, items):
         return extract_chars(items[0])
+    def lit_type(self, items):
+        return {"TOKEN": "lit_type", "type": items[0]}
     
     # operators
     reassignment_op = firstitem

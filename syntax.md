@@ -31,6 +31,10 @@ Nouva contains the following literals:
   - Creates an iterable range.
   - Syntax: `_start.._end`, where either `_start` or `_end` (but not both) may be left out.
   - Examples: `2..4`, `-3..3`.
+- **Type literal:**
+  - Used to pass around types as values.
+  - Syntax: `<_type>`.
+  - Examples: `<string>`, `<string | null | 0>`.
 
 ## Expressions
 
@@ -198,6 +202,22 @@ thisIsAString? = 12; // ERROR
 thisIsAString? = "another string"; // works
 ```
 
+Since types are passable as literals, generics may be made without any compiler overhead:
+
+```swift
+func genericAdd?(T, a, b) {
+  if T == <string> {
+    return a + "\n" + b;
+  }
+  else if T == <number> {
+    return a + b;
+  }
+  else {
+    return null;
+  }
+}
+```
+
 ## Control flow
 
 Nouva supports `if`, `else`, `while`, `for`, and `switch` control blocks.
@@ -257,3 +277,4 @@ module foo.barBaz;
 
 import somethingElse.FooBar;
 ```
+
