@@ -121,8 +121,7 @@ class ASTTransformer(Transformer):
     definition_expression = firstitem
     
     def function_invocation(self, items):
-        return {"TOKEN": "function_invocation", "function": items[0], "args": items[1], "handler": items[2] or None}
-    handler = firstitem
+        return {"TOKEN": "function_invocation", "function": items[0], "args": items[1] }
     def catcher(self, items):
         return {"TOKEN": "catcher", "identifier": items[1], "body": items[2]}
     def array_getter(self, items):
