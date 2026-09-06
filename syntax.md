@@ -82,9 +82,9 @@ The following are valid expressions in Nouva:
   - Operators: `==`, `!=`, `<`, `<=`, `>`, `>=`.
   - Example: `1 < 2`, `3 + 4 != 5`.
 - An anonymous [function](#Functions) expression.
-  - Syntax: `function (_arguments) { _content; }`.
+  - Syntax: `func (_arguments) { _content; }`.
 - A [lambda](#Functions) expression.
-  - Syntax: `@(_arguments) => _expression;`.
+  - Syntax: `func (_arguments) => _expression;`.
 - A parenthetical expression.
   - An expression surrounded with `(` `)` for grouping.
 
@@ -146,7 +146,7 @@ func addSquares(a: number, b: number) {
 ```swift
 val anonymousFunc = func (a: number, b: number) {
     return a * 2 + b * 2;
-}
+};
 ```
 
 **Lambda expression**:
