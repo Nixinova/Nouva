@@ -136,8 +136,8 @@ variable_identifier: [sym_private] identifier (sym_nullable | sym_errorable)*
 null: /\bnull\b/
 boolean: /\btrue\b/ | /\bfalse\b/
 number: based_number | numeral
-    numeral: /\d*\.?\d+/
-    based_number: /[0-9a-zA-Z]*\.?[0-9a-zA-Z]+_\d+/
+    numeral: /-?\d*\.?\d+/
+    based_number: /-?[0-9a-zA-Z]*\.?[0-9a-zA-Z]+_\d+/
 string: "\"" string_char* "\""
 array: "[" ([number ":"] expression [","])* "]"
 map: "{" (map_key ":" expression [","])* "}"

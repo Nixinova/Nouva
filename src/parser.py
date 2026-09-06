@@ -185,7 +185,7 @@ class ASTTransformer(Transformer):
     digit = firstitem
     
     def string(self, items):
-        return extract_chars(items)
+        return {"TOKEN": "string", "value": extract_chars(items)}
     
     def boolean(self, items):
         return items[0] == "true"

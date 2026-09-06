@@ -228,6 +228,8 @@ def transpile_part(item):
             ident = item["Name"]
             js_ident = ident.replace('#', '_').replace('?', '')
             return js_ident
+        case 'string':
+            return f'"{item["value"]}"'
         case 'number':
             return transpile_part(item["value"])
         case 'based_number':
@@ -243,6 +245,28 @@ def transpile_part(item):
                 # final fallback
                 # TODO support decimals of arbitrary bases
                 return f"parseInt('{num}', {base})"
+        case 'array':
+            elements = []
+            values = item["values"]
+            indices = item["indices"]
+            max_index = 0
+            for i in range(len(values)):
+                index = indices[i] and transpile_part(indices[i]) or f"{i}"
+                if int(index) > max_index:
+                    max_index = int(index)
+                elements.append('[' + index + ']:' + transpile_part(values[i]))
+            return f'Array.from({'{'}{','.join(elements)},length:{str(max_index + 1)}{'}'})'
+        case 'map':
+            elements = []
+            for i in range(len(item["keys"])):
+                key = transpile_part(item["keys"][i])
+                value = transpile_part(item["values"][i])
+                elements.append(f"{key}:{value}")
+            return f'{{{",".join(elements)}}}'
+        case 'range':
+            start = transpile_part(item["start"])
+            end = transpile_part(item["end"])
+            return f'Array.from({{length: {end} - {start} + 1}}, (_, i) => i + {start})'
         
         # default
         case _: return f'/* error {item} */'
