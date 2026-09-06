@@ -1,6 +1,6 @@
 import os
 
-from lark import Lark, Transformer, Tree, Token
+from lark import Lark, Token, Transformer, Tree
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 GRAMMAR_FILE = dir_path + "/grammar.lark"
@@ -62,6 +62,8 @@ class ASTTransformer(Transformer):
         return {"TOKEN": "for_block", "identifier": items[1], "range": items[2], "body": items[3]}
     def switch_block(self, items):
         return {"TOKEN": "switch_block", "expression": items[1], "body": items[2]}
+    def try_catch_block(self, items):
+        return {"TOKEN": "try_catch_block", "trybody": items[1], "catchparam": items[3], "catchbody": items[4]}
 
     switch_body = passthrough
     def switch_case(self, items):

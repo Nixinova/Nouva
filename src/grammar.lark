@@ -10,7 +10,7 @@ block: "{" unit* "}"
 func_block: "{" (unit | return_statement)* "}"
     return_statement: /\breturn\b/ expression ";"
 
-control_block: if_block | while_block | for_block | switch_block
+control_block: if_block | while_block | for_block | switch_block | try_catch_block
 if_block: /\bif\b/ expression block [else_block]
 else_block: /\belse\b/ [control_block | block]
 while_block: /\bwhile\b/ expression block
@@ -19,6 +19,7 @@ switch_block: /\bswitch\b/ expression "{" switch_body "}"
     switch_body: (switch_case | switch_default)*
         switch_case: /\bcase\b/ expression_list "->" (func_block | expression ";")
         switch_default: /\bdefault\b/ "->" (func_block | expression ";")
+try_catch_block: /\btry\b/ block /\bcatch\b/ ["(" variable_identifier ")"] block
 
 function_decl: /\bfunc\b/ variable_identifier params_list func_block
 class_decl: /\bclass\b/ identifier params_list "{" unit* "}"
@@ -77,9 +78,7 @@ expression: null | boolean | number | string | range | lit_type
 
 definition_expression: expression | map
 
-function_invocation: variable_identifier "(" expression_list ")" [handler]
-    handler: "!" (catcher | variable_identifier | func_expression | map_getter)
-        catcher: /\bcatch\b/ "(" function_param ")" func_block
+function_invocation: variable_identifier "(" expression_list ")"
 array_getter: variable_identifier "[" expression "]"
 map_getter: variable_identifier "." map_key ["(" expression_list ")"]
 

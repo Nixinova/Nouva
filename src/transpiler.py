@@ -87,6 +87,12 @@ def transpile_part(item):
             return f"{cases_label} {'{'}\n{body} break;\n{'}'}"
         case 'switch_default':
             return f"default: {'{'}\n{collect("body")} break;\n{'}'}"
+        case 'try_catch_block':
+            try_body = collect("trybody")
+            catch_param = collect("catchparam")
+            catch_param_list = catch_param and f"({catch_param})" or ''
+            catch_body = collect("catchbody")
+            return f"try {'{'}\n{try_body}{'}'}\ncatch {catch_param_list} {'{'}\n{catch_body}{'}'}"
         case 'class_decl':
             ident = collect("identifier")
             params = []
@@ -180,15 +186,7 @@ def transpile_part(item):
         case 'function_invocation':
             name = collect("function").replace('!', '').replace('?', '').replace('#', '')
             args = collect("args")
-            handler = item["handler"] and collect("handler")
-            if handler:
-                return f"(function() {'{'}\ntry {'{'}\nreturn {name}({args});\n{'}'} catch(_e$) {'{'}\n({handler})(_e$);\n{'}'}\n{'}'})()"
-            else:
-                return f"{name}({args})"
-        case 'catcher':
-            ident = collect("identifier")
-            body = collect("body")
-            return f"(function({ident}) {'{'}\n{body}\n{'}'})"
+            return f"{name}({args})"
         case 'method_call':
             ident = collect("identifier")
             key = item["Key"]
