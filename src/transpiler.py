@@ -202,10 +202,8 @@ def transpile_part(item):
             op = item["Operator"]
             rhs = transpile_part(item["rhs"])
             # Nouva->JS conversions
-            if op == '^': op = '**'
-            elif op == '^=': op = '**='
-            elif op == '><': op = '^'
-            elif op == '><=': op = '^='
+            if op == '^^': op = '**'
+            elif op == '^^=': op = '**='
             
             return f"{lhs} {op} {rhs}"
         

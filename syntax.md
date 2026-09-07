@@ -70,11 +70,11 @@ The following are valid expressions in Nouva:
 - A unary expression.
   - Examples: `-12`, `+6`.
 - A mathematical expression.
-  - Operators: add (`+`), subtract (`-`), multiply (`*`), divide (`/`), exponent (`^`).
-  - Examples: `2 + 6`, `(5 + 2 ^ 6) / 4`.
+  - Operators: add (`+`), subtract (`-`), multiply (`*`), divide (`/`), exponent (`^^`).
+  - Examples: `2 + 6`, `(5 + 2 ^^ 6) / 4`.
 - A bitwise expression.
-  - Operators: and (`&`), or (`|`), xor (`><`).
-  - Examples: `0b1011 & 0b0011`, `0b10 >< 0b11`.
+  - Operators: and (`&`), or (`|`), xor (`^`).
+  - Examples: `0b1011 & 0b0011`, `0b10 ^ 0b11`.
 - A logical expression.
   - Operators: and (`&&`), or (`||`).
   - Examples: `6 == 1 || 2 == 2`, `foo && bar`.
@@ -118,7 +118,7 @@ b = 3; // valid
 Reassignments may be *binary* (having both an operator and a complement) or *unary* (having only an operator).
 
 - **Binary reassignment**:
-  - Operators: `=`, `+=`, `-=`, `*=`, `/=`, `&=`, `|=`, `><=`, `<<=`, `>>=`, `&&=`, `||=`.
+  - Operators: `=`, `+=`, `-=`, `*=`, `/=`, `^^=`, `&=`, `|=`, `^=`, `<<=`, `>>=`, `&&=`, `||=`.
   - Examples: `x += 2`, `y /= 10`.
 - **Unary reassignment**:
   - Operators: `=!=` (invert boolean and save back into variable).
@@ -151,7 +151,7 @@ val anonymousFunc = func (a: number, b: number) {
 
 **Lambda expression**:
 ```swift
-val lambda = func (a: number, b: number) => a ^ 2 + b ^ 2;
+val lambda = func (a: number, b: number) => a ^^ 2 + b ^^ 2;
 ```
 
 ## Classes
@@ -258,7 +258,7 @@ else {
 ```js
 var num = 1;
 while num < 100 {
-    num ^= 2;
+    num ^^= 2;
 }
 ```
 
@@ -320,7 +320,7 @@ func numFunc!(input: number) {
 }
 
 try {
-  numFunc!(12)
+  numFunc!(12);
 } catch {
   // error handler not called; prints 12
 }
