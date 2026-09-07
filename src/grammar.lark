@@ -7,21 +7,20 @@ unit: statement | block | control_block | function_decl | class_decl
 
 // blocks of code
 block: "{" unit* "}"
-func_block: "{" (unit | return_statement)* "}"
-    return_statement: /\breturn\b/ expression ";"
 
-control_block: if_block | while_block | for_block | switch_block | try_catch_block
+control_block: if_block | while_block | for_block | switch_block | try_catch_block | return_statement
 if_block: /\bif\b/ expression block [else_block]
 else_block: /\belse\b/ [control_block | block]
 while_block: /\bwhile\b/ expression block
 for_block: /\bfor\b/ identifier ":" expression block
 switch_block: /\bswitch\b/ expression "{" switch_body "}"
     switch_body: (switch_case | switch_default)*
-        switch_case: /\bcase\b/ expression_list "->" (func_block | expression ";")
-        switch_default: /\bdefault\b/ "->" (func_block | expression ";")
+        switch_case: /\bcase\b/ expression_list "->" (block | expression ";")
+        switch_default: /\bdefault\b/ "->" (block | expression ";")
 try_catch_block: /\btry\b/ block /\bcatch\b/ ["(" variable_identifier ")"] block
+return_statement: /\breturn\b/ expression ";"
 
-function_decl: /\bfunc\b/ variable_identifier params_list func_block
+function_decl: /\bfunc\b/ variable_identifier params_list block
 class_decl: /\bclass\b/ identifier params_list "{" unit* "}"
 
 // line of code
@@ -118,7 +117,7 @@ comparison_expression: expression comparison_op expression
         sym_geq: ">="
 
 func_expression: function_expression | lambda_expression
-    function_expression: /\bfunc\b/ params_list func_block
+    function_expression: /\bfunc\b/ params_list block
     lambda_expression: /\bfunc\b/ params_list "=>" expression
 
 parenth_expression: "(" expression ")"
