@@ -127,7 +127,7 @@ var_keyword: /\bvar\b/ | /\bval\b/
 
 // atomics
 identifier: word_char id_char*
-variable_identifier: [sym_private] identifier (sym_nullable | sym_errorable)*
+variable_identifier: [sym_private] identifier (sym_nullable | sym_errorable | sym_nullable sym_errorable | sym_errorable sym_nullable)?
     sym_private: "#"
     sym_nullable: "?"
     sym_errorable: "!"
