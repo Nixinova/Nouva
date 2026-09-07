@@ -34,7 +34,7 @@ Nouva contains the following literals:
 - **Type literal:**
   - Used to pass around types as values.
   - Syntax: `<_type>`.
-  - Examples: `<string>`, `<string | null | 0>`.
+  - Examples: `<string>`, `<string | null | number>`.
 
 ## Identifiers
 
@@ -74,7 +74,7 @@ The following are valid expressions in Nouva:
   - Examples: `2 + 6`, `(5 + 2 ^^ 6) / 4`.
 - A bitwise expression.
   - Operators: and (`&`), or (`|`), xor (`^`).
-  - Examples: `0b1011 & 0b0011`, `0b10 ^ 0b11`.
+  - Examples: `1011_2 & 0011_2`, `10_2 ^ 11_2`.
 - A logical expression.
   - Operators: and (`&&`), or (`||`).
   - Examples: `6 == 1 || 2 == 2`, `foo && bar`.
@@ -160,7 +160,7 @@ Classes may be created with constructors and methods.
 Members are public by default; use `#` to make an identifier private.
 
 ```swift
-class Foo(num) {
+class Foo(num: number) {
   // constructor is automatically created from the above parameter list
   // instance variables may access these parameters directly
 
