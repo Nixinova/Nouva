@@ -35,6 +35,7 @@ Nouva contains the following literals:
   - Used to pass around types as values.
   - Syntax: `<_type>`.
   - Examples: `<string>`, `<string | null | number>`.
+  - See [Types](#Types)
 
 ## Identifiers
 
@@ -223,7 +224,7 @@ thisIsAString? = "another string"; // works
 Since types are passable as literals, generics may be made without any compiler overhead:
 
 ```swift
-func genericAdd?!(T, a, b) {
+func genericAdd?!(T: type, a: object, b: object) {
   if T == <string> {
     return a + "\n" + b;
   }
@@ -235,6 +236,17 @@ func genericAdd?!(T, a, b) {
   }
 }
 ```
+
+### Built-in types
+- `object`: Anything
+- `string`: String
+- `number`: Number
+- `null`: Null
+- `boolean`: Boolean (`true`/`false`)
+- `range`: Numeric range
+- `array`: Array
+- `map`: Map
+- `type`: A type expression (`<_type>`)
 
 ## Control flow
 
@@ -263,7 +275,7 @@ while num < 100 {
 ```
 
 **For loop**:
-```c
+```py
 for i : 1..10 {
     print(i);
 }
